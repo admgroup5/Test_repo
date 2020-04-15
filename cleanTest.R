@@ -5,100 +5,66 @@ library(readxl)
 library(readr)
 ###########################################################################
 ###########################################################################
-# remove variables 
-rm(population, childcare, childcare2, housing)
+# remove specific variables 
+# rm(population, childcare, childcare2, housing)
+# or removel all variables to clear the workspace 
+# rm(list=ls())
 
 ###########################################################################
 ###########################################################################
 
 # Import dataset for ADMP, specify range and give appropriate name 
-population <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/Population 2.0.csv")
-#childcare <- read_excel("~/Dropbox/ADM Group Assessment/The Development/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx", sheet = "Childcare_providers")
 childcare <- read_excel("~/Dropbox/ADM Group Assessment/The Development/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
-childcare2 <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/facilities.csv")
-housing <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/housing.csv")
 
-###########################################################################
-###########################################################################
-
-# 1) rename specific columns 
-# 1.5) rearrange the order of the columns appearing 
-# 2) convert Excel numeric date data to correct date format in R
-# 
-# 3) to quickly find and remove data that has wrong dates
-# 
-# 4) to backup and store any rows that will be updated or removed.
-# 
-# 5) to identify, edit and / or remove null or missing data.
-# 
-# 6) to identify and remove garbage data.
-# 
-# 7) then we will make some quick and easy insights in the end that you will find interesting on this dataset.
-# 
-
-###########################################################################
-###########################################################################
-
-
+# filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 x <- childcare %>% filter(`Local Authority`==c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
-x2 <- x[c(2:7,13,14,21,22)]
+
+# filter columns to show only the required columns
+x2 <- x[c(2,5,6,7,13,16,21)] 
+
+# correct the dates to remove the time 
 x3 <- separate(x2,'Registration date', c('date', 'time'), sep = ' ')
-x4 <- x3[c(1:4,6:11)]
+
+# filter out the time column
+x4 <- x3[c(1,2,4:8)]
+
+# correct the order(appearance of the date column)
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
 
+# remove the nulls
+test <- x4 %>% filter(`Registered places`!='NULL')
+view(test)
+
+# rename your cleaned data 
+cleanedcare <- test
+
 # check the column names
-names(x4)
+names(cleanedcare)
 
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
-counts <- table(x4$`Provider URN`, useNA ="ifany")
-
-# 267 nulls in registered person URN
-counts <- table(x4$`Registered Person URN`, useNA ="ifany")
+counts <- table(cleanedcare$`Provider URN`, useNA ="ifany")
 view(counts)
 
-# 267 nulls in registered person name
-counts <- table(x4$`Registered Person Name`, useNA ="ifany")
-
 # no nulls here
-counts <- table(x4$date, useNA ="ifany")
+counts <- table(cleanedcare$`Registration date`, useNA ="ifany")
 view(counts)
 
 # no nulls in provider type
-counts <- table(x4$`Provider type`, useNA ="ifany")
+counts <- table(cleanedcare$`Provider type`, useNA ="ifany")
 view(counts)
 
 # no nulls in provider name 
-counts <- table(x4$`Provider name`, useNA ="ifany")
+counts <- table(cleanedcare$`Provider name`, useNA ="ifany")
 view(counts)
 
 # no nulls here
-counts <- table(x4$`Local Authority`, useNA ="ifany")
-view(counts)
-
-# no nulls here 
-counts <- table(x4$`Parliamentary constituency`, useNA ="ifany")
+counts <- table(cleanedcare$`Local Authority`, useNA ="ifany")
 view(counts)
 
 # 7 nulls in registered places
-counts <- table(x4$`Registered places`, useNA ="ifany")
+counts <- table(cleanedcare$Region, useNA ="ifany")
 view(counts)
-
-# no nulls here
-counts <- table(x4$`Registered places including estimates`, useNA ="ifany")
-view(counts)
-
-# remove the nulls and view 
-test <- x4 %>% filter(`Registered Person URN`!='NULL', `Registered places`!='NULL')
-view(test)
-
-# remove the nulls and view separate thing
-test2 <- x4 %>% filter(`Registered places`!='NULL')
-test3 <- test2[c(1,4:10)]
-view(test3)
-
-# rename your cleaned data 
-cleanedcare2 <- test3
 
 ############# checks ##################
 complete.cases(cleanedcare)
@@ -112,9 +78,59 @@ is.null(cleanedcare)
 summary(cleanedcare)
 ############# checks ##################
 
+# rename some columns
+names(cleanedcare)[2] <- "Registration date"
+
 # save cleaned dataset as a csv file
 write.csv(cleanedcare, "cleanedcare.csv")
-write.csv(cleanedcare2, "cleanedcare2.csv")
+
+###########################################################################
+###########################################################################
+
+# *****Population****
+
+population <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/Population 2.0.csv")
+
+# create new version to clean
+pop2 <- population
+
+# rename some columns
+names(pop2)[1] <- "Local authority"
+names(pop2)[2] <- "Local authority code"
+
+# change the order of the columns 
+pop2 <- pop2[c(2,1,3,4,5,6,7,8,9,10)]
+
+# remove unnecessary columns 
+pop3 <- pop2[c(1,2,3,5,6,7,8,9,10)]
+
+# create a key(to be called'year') for the years and a new column 
+# for the values as the dataset is unneccesarily wide
+pop4 <- gather (pop3, year, 'count', -'Local authority code', -'Local authority', -'Age')
 
 
+# Introduce month column with empty values
+pop4[,"month"] <- NA
 
+# change the order so month is next to the year 
+pop5 <- pop4[c(1,2,3,4,6,5)]
+
+# change the data type to character
+pop5$month <- as.character(pop5$month)
+
+# Assign name "NA" to the empty values(all values) within the month object 
+names(pop5)[is.na(names(pop5))] <- "NA"
+
+# your clean data
+cleanpop <- pop5
+
+# save cleaned dataset as a csv file
+write.csv(cleanpop, "cleanpop.csv")
+
+
+###########################################################################
+###########################################################################
+
+# *****housing****
+
+housing <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/housing.csv")
