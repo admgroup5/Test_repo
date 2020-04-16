@@ -32,10 +32,12 @@ names(counts)[is.na(names(counts))] <- "NA"
 barplot(counts, main="Local authority distribution", xlab='Counts', ylab=('Local authority'== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')), horiz=TRUE)
 
 
-counts <- table(childcare$`Local authority`, useNA ="ifany")
+counts <- table(childcare$`Local Authority`, useNA ="ifany")
 view(counts)
 
 
+names(counts)[is.na(names(counts))] <- "NA"
+barplot(counts, main="Distribution", xlab='Counts', ylab='Local Authority', horiz=TRUE)
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 x <- childcare %>% filter(`Local Authority`==c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
@@ -197,6 +199,8 @@ is.null(houses2)
 summary(houses2)
 ############# checks ##################
 
+check1 <- checks %>% filter(anthonia == c('manchester', 'trafford', 'bury'))
+view(check1)
 
 
 
