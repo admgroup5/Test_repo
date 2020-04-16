@@ -1,8 +1,11 @@
-# Install packages
+# Install packages (run lines individually to ensure smooth installation)
+# check for updates. If there are any for the below packages, update by clicking the refresh button
 library(dplyr)
 install.packages(c("boot", "class", "foreign", "lattice", "MASS", "nlme", "nnet", "survival"))
 library(readxl)
 library(readr)
+library(tidyr)
+library(tidyverse)
 ###########################################################################
 ###########################################################################
 # remove specific variables 
@@ -12,7 +15,7 @@ library(readr)
 
 ###########################################################################
 ###########################################################################
-
+# *****childcare****
 # Import dataset for ADMP, specify range and give appropriate name 
 childcare <- read_excel("~/Dropbox/ADM Group Assessment/The Development/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
 
@@ -86,7 +89,6 @@ write.csv(cleanedcare, "cleanedcare.csv")
 
 ###########################################################################
 ###########################################################################
-
 # *****Population****
 
 population <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/Population 2.0.csv")
@@ -105,7 +107,7 @@ pop2 <- pop2[c(2,1,3,4,5,6,7,8,9,10)]
 pop3 <- pop2[c(1,2,3,5,6,7,8,9,10)]
 
 # create a key(to be called'year') for the years and a new column 
-# for the values as the dataset is unneccesarily wide
+# for the values (called 'count')as the dataset is unneccesarily wide
 pop4 <- gather (pop3, year, 'count', -'Local authority code', -'Local authority', -'Age')
 
 
@@ -127,10 +129,55 @@ cleanpop <- pop5
 # save cleaned dataset as a csv file
 write.csv(cleanpop, "cleanpop.csv")
 
-
 ###########################################################################
 ###########################################################################
+#clear housing data 
+rm(houses,houses2,housing,y)
 
 # *****housing****
-
 housing <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/housing.csv")
+
+# rename some columns
+names(housing)[4] <- "Local authority"
+
+###########################################################################
+# this bit is still not working
+###########################################################################
+# filter out unwanted local authorities
+y <- housing %>% filter(`Local authority`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
+
+# try with the codes instead
+y <- housing %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
+houses <- housing
+
+# its only coming up with one out of 10 local authorities so find out why
+counts <- table(housing$`Local authority`, useNA ="ifany")
+view(counts)
+
+
+
+# create a key(to be called'date') for the dates and a new column 
+# for the number of houses called 'new houses' as the dataset is unneccesarily wide
+houses2 <- gather (houses, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
+y <- houses2 %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
+y <- houses2 %>% filter(`Local authority`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
+
+
+############# checks ##################
+complete.cases(houses2)
+str(houses2)
+# checking Non numeric values
+'isitnumeric?'<- unlist(lapply(houses2, is.numeric))
+view(`isitnumeric?`)
+# checking Non character values
+'isitcharacter?'<- unlist(lapply(houses2, is.character))
+view(`isitcharacter?`)
+#checking for null in the object
+is.null(houses2)
+#checking missing values
+summary(houses2)
+############# checks ##################
+
+
+
+
