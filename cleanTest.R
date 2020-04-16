@@ -17,7 +17,7 @@ library(tidyverse)
 ###########################################################################
 # *****childcare****
 # Import dataset for ADMP, specify range and give appropriate name 
-childcare <- read_excel("~/Dropbox/ADM Group Assessment/The Development/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
+childcare <- read_excel("Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 x <- childcare %>% filter(`Local Authority`==c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
@@ -90,8 +90,7 @@ write.csv(cleanedcare, "cleanedcare.csv")
 ###########################################################################
 ###########################################################################
 # *****Population****
-
-population <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/Population 2.0.csv")
+population <- read_csv("Population 2.0.csv")
 
 # create new version to clean
 pop2 <- population
@@ -135,7 +134,8 @@ write.csv(cleanpop, "cleanpop.csv")
 rm(houses,houses2,housing,y)
 
 # *****housing****
-housing <- read_csv("~/Dropbox/ADM Group Assessment/The Development/Structed Data/housing.csv")
+housing <- read_csv("housing.csv")
+
 
 # rename some columns
 names(housing)[4] <- "Local authority"
