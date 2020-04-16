@@ -3,3 +3,6 @@
 #Ralston lenovo
 
 # Anthonia mac
+
+# Emmanuel Dell
+# rima laptop
