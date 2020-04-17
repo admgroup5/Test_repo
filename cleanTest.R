@@ -1,3 +1,5 @@
+# remove all variables to clear the workspace 
+# rm(list=ls())
 # Install packages (run lines individually to ensure smooth installation)
 # check for updates. If there are any for the below packages, update by clicking the refresh button
 library(dplyr)
@@ -6,18 +8,12 @@ library(readxl)
 library(readr)
 library(tidyr)
 library(tidyverse)
-###########################################################################
-###########################################################################
-# remove specific variables 
-# rm(population, childcare, childcare2, housing)
-# or removel all variables to clear the workspace 
-# rm(list=ls())
 
 ###########################################################################
 ###########################################################################
 # *****childcare****
-# Import dataset for ADMP, specify range and give appropriate name 
-childcare <- read_excel("Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
+# Import dataset, specify range and give appropriate name 
+childcare <- read_excel("raw data used/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
 
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
@@ -103,7 +99,8 @@ write.csv(cleanedcare, "clean/cleanedcare.csv")
 ###########################################################################
 ###########################################################################
 # *****Population****
-population <- read_csv("Population 2.0.csv")
+# Import dataset
+population <- read_csv("raw data used/Population 2.0.csv")
 
 # create new version to clean
 pop2 <- population
@@ -137,7 +134,6 @@ tst <- c()
 value <- c('N/A')
 tst[1:360]<- unique(value)[1]
 
-
 pop5$month <- tst
 
 # your clean data
@@ -160,11 +156,9 @@ write.csv(cleanpop, "clean/cleanpop.csv")
 
 ###########################################################################
 ###########################################################################
-#clear housing data 
-rm(houses,houses2,housing,y)
-
 # *****housing****
-housing <- read_csv("housing.csv")
+# Import dataset
+housing <- read_csv("raw data used/housing.csv")
 
 
 # rename some columns
