@@ -132,14 +132,31 @@ pop5 <- pop4[c(1,2,3,4,6,5)]
 # change the data type to character
 pop5$month <- as.character(pop5$month)
 
-# Assign name "NA" to the empty values(all values) within the month object 
-names(pop5)[is.na(names(pop5))] <- "NA"
+# replace the values in the month column with the value we want ("N/A")
+tst <- c()
+value <- c('N/A')
+tst[1:360]<- unique(value)[1]
+
+
+pop5$month <- tst
 
 # your clean data
 cleanpop <- pop5
 
+############# checks ##################
+complete.cases(cleanpop)
+str(cleanpop)
+NonNum<- unlist(lapply(cleanpop, is.numeric))
+# checking Non character values
+NonChar<- unlist(lapply(cleanpop, is.character))
+#checking for null in the object
+is.null(cleanpop)
+#checking missing values
+summary(cleanpop)
+############# checks ##################
+
 # save cleaned dataset as a csv file
-write.csv(cleanpop, "cleanpop.csv")
+write.csv(cleanpop, "clean/cleanpop.csv")
 
 ###########################################################################
 ###########################################################################
