@@ -20,27 +20,7 @@ library(tidyverse)
 childcare <- read_excel("Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
 
 
-
-# Read the missing cells into the counts object along with any missing values 
-counts <- table(childcare$`Local Authority`, useNA ="ifany")
-view(counts)
-
-
-# Assign name "NA" to the missing values within the counts object 
-names(counts)[is.na(names(counts))] <- "NA"
-# Display barplot 
-barplot(counts, main="Local authority distribution", xlab='Counts', ylab=('Local authority'== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')), horiz=TRUE)
-
-
-counts <- table(childcare$`Local Authority`, useNA ="ifany")
-view(counts)
-
-
-names(counts)[is.na(names(counts))] <- "NA"
-barplot(counts, main="Distribution", xlab='Counts', ylab='Local Authority', horiz=TRUE)
-
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
-x <- childcare %>% filter(`Local Authority`==c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
 x2 <- filter(childcare, `Local Authority`==c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
 
 # filter columns to show only the required columns
@@ -55,6 +35,17 @@ x4 <- x3[c(1,2,4:8)]
 # correct the order(appearance of the date column)
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
 
+# Read the missing cells into the counts object along with any missing values: we have 7 nulls
+# If we subtract the 7 nulls from x4's length of 368, we should have 361 after filtering
+counts <- table(x4$`Registered places`, useNA ="ifany")
+view(counts)
+
+# Assign name "NA" to the missing values within the counts object 
+names(counts)[is.na(names(counts))] <- "NA"
+# Display barplot 
+barplot(counts, main="Registered places", xlab='Counts', ylab=('Registered places'), horiz=TRUE)
+
+
 # remove the nulls
 test <- x4 %>% filter(`Registered places`!='NULL')
 view(test)
@@ -64,6 +55,10 @@ cleanedcare <- test
 
 # check the column names
 names(cleanedcare)
+
+# rename some columns
+names(cleanedcare)[2] <- "Registration date"
+names(cleanedcare)[5] <- "Local authority"
 
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
@@ -83,7 +78,7 @@ counts <- table(cleanedcare$`Provider name`, useNA ="ifany")
 view(counts)
 
 # no nulls here
-counts <- table(cleanedcare$`Local Authority`, useNA ="ifany")
+counts <- table(cleanedcare$`Local authority`, useNA ="ifany")
 view(counts)
 
 # 7 nulls in registered places
@@ -102,11 +97,8 @@ is.null(cleanedcare)
 summary(cleanedcare)
 ############# checks ##################
 
-# rename some columns
-names(cleanedcare)[2] <- "Registration date"
-
 # save cleaned dataset as a csv file
-write.csv(cleanedcare, "cleanedcare.csv")
+write.csv(cleanedcare, "clean/cleanedcare.csv")
 
 ###########################################################################
 ###########################################################################
