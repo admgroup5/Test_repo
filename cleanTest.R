@@ -99,7 +99,7 @@ summary(cleanedcare)
 ############# checks ##################
 
 # save cleaned dataset as a csv file
-write.csv(cleanedcare, "clean/cleanedcare.csv")
+write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
 
 ###########################################################################
 ###########################################################################
@@ -160,7 +160,7 @@ summary(cleanpop)
 ############# checks ##################
 
 # save cleaned dataset as a csv file
-write.csv(cleanpop, "clean/cleanpop.csv")
+write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 
 ###########################################################################
 ###########################################################################
@@ -203,5 +203,5 @@ summary(houses)
 cleanhouse <- houses
 
 # save cleaned dataset as a csv file
-write.csv(cleanhouse, "clean/cleanhouse.csv")
+write.csv(cleanhouse, "clean/cleanhouse.csv", row.names=F)
 
