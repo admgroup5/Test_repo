@@ -168,13 +168,9 @@ write.csv(cleanpop, "clean/cleanpop.csv")
 # Import dataset
 housing <- read_csv("raw data used/housing.csv")
 
-
 # rename some columns
 names(housing)[4] <- "Local authority"
 
-###########################################################################
-# this bit is still not working
-###########################################################################
 # filter out unwanted local authorities
 y <- housing %>%
   filter(`Local authority` %in% tst2)
@@ -182,7 +178,6 @@ y <- housing %>%
 # check counts
 counts <- table(y$`Local authority`, useNA ="ifany")
 view(counts)
-
 
 # create a key(to be called'date') for the dates and a new column 
 # for the number of houses called 'new houses' as the dataset is unneccesarily wide
