@@ -17,7 +17,9 @@ childcare <- read_excel("raw data used/Education_Childcare_dataset_as_at_31_Marc
 
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
-x2 <- filter(childcare, `Local Authority`==c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
+tst2 <- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')
+x <- childcare %>%
+  filter(`Local Authority`%in% tst2)
 
 # filter columns to show only the required columns
 x2 <- x[c(2,5,6,7,13,16,21)] 
@@ -32,7 +34,7 @@ x4 <- x3[c(1,2,4:8)]
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
 
 # Read the missing cells into the counts object along with any missing values: we have 7 nulls
-# If we subtract the 7 nulls from x4's length of 368, we should have 361 after filtering
+# If we subtract the 68 nulls from x4's length of 3867, we should have 361 after filtering
 counts <- table(x4$`Registered places`, useNA ="ifany")
 view(counts)
 
@@ -174,50 +176,37 @@ names(housing)[4] <- "Local authority"
 # this bit is still not working
 ###########################################################################
 # filter out unwanted local authorities
-y <- housing %>% filter(`Local authority`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
+y <- housing %>%
+  filter(`Local authority` %in% tst2)
 
-# try with the codes instead
-y <- housing %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
-houses <- housing
-
-y1 <- housing %>%
-  filter(`Region/Country name` == 'North West')
-
-y2 <- y1 %>%
-  filter(`Local authority code`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
-
-y2 <- y1%>%
-  filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
-
-# its only coming up with one out of 10 local authorities so find out why
-counts <- table(housing$`Local authority`, useNA ="ifany")
+# check counts
+counts <- table(y$`Local authority`, useNA ="ifany")
 view(counts)
 
 
 # create a key(to be called'date') for the dates and a new column 
 # for the number of houses called 'new houses' as the dataset is unneccesarily wide
-houses <- gather (housing, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
-
-# try filtering again
-z <- houses %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
-y <- houses2 %>% filter(`Local authority`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
+houses <- gather (y, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
 
 
 ############# checks ##################
-complete.cases(houses2)
-str(houses2)
+complete.cases(houses)
+str(houses)
 # checking Non numeric values
-'isitnumeric?'<- unlist(lapply(houses2, is.numeric))
+'isitnumeric?'<- unlist(lapply(houses, is.numeric))
 view(`isitnumeric?`)
 # checking Non character values
-'isitcharacter?'<- unlist(lapply(houses2, is.character))
+'isitcharacter?'<- unlist(lapply(houses, is.character))
 view(`isitcharacter?`)
 #checking for null in the object
-is.null(houses2)
+is.null(houses)
 #checking missing values
-summary(houses2)
+summary(houses)
 ############# checks ##################
 
+# since its all clean, we can rename 
+cleanhouse <- houses
 
-
+# save cleaned dataset as a csv file
+write.csv(cleanhouse, "clean/cleanhouse.csv")
 
