@@ -81,7 +81,7 @@ view(counts)
 counts <- table(cleanedcare$`Local authority`, useNA ="ifany")
 view(counts)
 
-# 7 nulls in registered places
+# no nulls in region
 counts <- table(cleanedcare$Region, useNA ="ifany")
 view(counts)
 
