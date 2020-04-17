@@ -84,9 +84,12 @@ view(counts)
 ############# checks ##################
 complete.cases(cleanedcare)
 str(cleanedcare)
-NonNum<- unlist(lapply(cleanedcare, is.numeric))
+# checking Non numeric values
+'isitnumeric?'<- unlist(lapply(cleanedcare, is.numeric))
+view(`isitnumeric?`)
 # checking Non character values
-NonChar<- unlist(lapply(cleanedcare, is.character))
+'isitcharacter?'<- unlist(lapply(cleanedcare, is.character))
+view(`isitcharacter?`)
 #checking for null in the object
 is.null(cleanedcare)
 #checking missing values
@@ -142,9 +145,12 @@ cleanpop <- pop5
 ############# checks ##################
 complete.cases(cleanpop)
 str(cleanpop)
-NonNum<- unlist(lapply(cleanpop, is.numeric))
+# checking Non numeric values
+'isitnumeric?'<- unlist(lapply(cleanpop, is.numeric))
+view(`isitnumeric?`)
 # checking Non character values
-NonChar<- unlist(lapply(cleanpop, is.character))
+'isitcharacter?'<- unlist(lapply(cleanpop, is.character))
+view(`isitcharacter?`)
 #checking for null in the object
 is.null(cleanpop)
 #checking missing values
@@ -174,16 +180,26 @@ y <- housing %>% filter(`Local authority`== c('Bolton', 'Bury', 'Manchester', 'O
 y <- housing %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
 houses <- housing
 
+y1 <- housing %>%
+  filter(`Region/Country name` == 'North West')
+
+y2 <- y1 %>%
+  filter(`Local authority code`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
+
+y2 <- y1%>%
+  filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
+
 # its only coming up with one out of 10 local authorities so find out why
 counts <- table(housing$`Local authority`, useNA ="ifany")
 view(counts)
 
 
-
 # create a key(to be called'date') for the dates and a new column 
 # for the number of houses called 'new houses' as the dataset is unneccesarily wide
-houses2 <- gather (houses, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
-y <- houses2 %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
+houses <- gather (housing, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
+
+# try filtering again
+z <- houses %>% filter(`Local authority code`== c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010'))
 y <- houses2 %>% filter(`Local authority`== c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan'))
 
 
@@ -202,8 +218,6 @@ is.null(houses2)
 summary(houses2)
 ############# checks ##################
 
-check1 <- checks %>% filter(anthonia == c('manchester', 'trafford', 'bury'))
-view(check1)
 
 
 
