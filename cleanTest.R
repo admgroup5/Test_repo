@@ -134,9 +134,9 @@ pop5 <- pop4[c(1,2,3,4,6,5)]
 # change the data type to character
 pop5$month <- as.character(pop5$month)
 
-# replace the values in the month column with the value we want ("N/A")
+# replace the values in the month column with the value we want ("NA")
 tst <- c()
-value <- c('N/A')
+value <- c('NA')
 tst[1:360]<- unique(value)[1]
 
 pop5$month <- tst
