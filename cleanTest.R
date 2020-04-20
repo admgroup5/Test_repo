@@ -14,15 +14,24 @@ library(tidyverse)
 # *****childcare****
 # Import dataset, specify range and give appropriate name 
 childcare <- read_excel("raw data used/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
+time <- read_excel("raw data used/DimTime.xlsx")
 
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
-tst2 <- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')
+tst2 <- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Rochdale', 'Salford', 'Stockport', 'Tameside', 'Trafford', 'Wigan')
+tstval <- c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010')
+
+names(tstval) <- tst2
+
 x <- childcare %>%
   filter(`Local Authority`%in% tst2)
 
 # filter columns to show only the required columns
-x2 <- x[c(2,5,6,7,13,16,21)] 
+x2 <- x[c(2,5,6,7,13,21)] 
+
+xtry <- x2 %>% mutate(`Local Authority` = replace(`Local Authority`, `Local Authority` %in% tst2, tstval))
+df[df$height == 20, "height"] <- NA
+
 
 # correct the dates to remove the time 
 x3 <- separate(x2,'Registration date', c('date', 'time'), sep = ' ')
