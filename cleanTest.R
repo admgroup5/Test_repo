@@ -23,8 +23,8 @@ la <- read_excel("raw data used/local authorities.xlsx")
 x <- childcare %>%
   filter(`Local Authority`%in% la$`Local authority`)
 
-# Duplicate the local authority column
-x$la2 <- x$`Local Authority`
+# Introduce a column for the local authority code by duplicating the local authority column
+x$`Local authority code` <- x$`Local Authority`
 
 # filter columns to show only the required columns (remove region and others)
 x2 <- x[c(2,5,6,7,13,21,40)] 
@@ -33,25 +33,28 @@ x2 <- x2[c(1,2,3,4,7,5,6)]
 
 # rename to work on new variable 
 as1 <- x2
+
+# check the types of data contained in the columns we are concerned about
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
-countsla <- table(as1$la2, useNA ="ifany")
+countsla <- table(as1$`Local authority code`, useNA ="ifany")
 view(countsla)
 
-as1$la2[as1$la2 %in% "Bolton"] <- "E08000001"
-as1$la2[as1$la2 %in% "Bury"] <- "E08000002"
-as1$la2[as1$la2 %in% "Manchester"] <- "E08000003"
-as1$la2[as1$la2 %in% "Oldham"] <- "E08000004"
-as1$la2[as1$la2 %in% "Rochdale"] <- "E08000005"
-as1$la2[as1$la2 %in% "Salford"] <- "E08000006"
-as1$la2[as1$la2 %in% "Stockport"] <- "E08000007"
-as1$la2[as1$la2 %in% "Tameside"] <- "E08000008"
-as1$la2[as1$la2 %in% "Trafford"] <- "E08000009"
-as1$la2[as1$la2 %in% "Wigan"] <- "E08000010"
+# introduce the local authority codes
+as1$`Local authority code`[as1$`Local authority code` %in% "Bolton"] <- "E08000001"
+as1$`Local authority code`[as1$`Local authority code` %in% "Bury"] <- "E08000002"
+as1$`Local authority code`[as1$`Local authority code` %in% "Manchester"] <- "E08000003"
+as1$`Local authority code`[as1$`Local authority code` %in% "Oldham"] <- "E08000004"
+as1$`Local authority code`[as1$`Local authority code` %in% "Rochdale"] <- "E08000005"
+as1$`Local authority code`[as1$`Local authority code` %in% "Salford"] <- "E08000006"
+as1$`Local authority code`[as1$`Local authority code` %in% "Stockport"] <- "E08000007"
+as1$`Local authority code`[as1$`Local authority code` %in% "Tameside"] <- "E08000008"
+as1$`Local authority code`[as1$`Local authority code` %in% "Trafford"] <- "E08000009"
+as1$`Local authority code`[as1$`Local authority code` %in% "Wigan"] <- "E08000010"
 
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
-countsla <- table(as1$la2, useNA ="ifany")
+countsla <- table(as1$`Local authority code`, useNA ="ifany")
 view(countsla)
 
 # E08000001	Bolton
@@ -67,16 +70,15 @@ view(countsla)
 
 
 # correct the dates to remove the time 
-x3 <- separate(x2,'Registration date', c('date', 'time'), sep = ' ')
+x3 <- separate(as1,'Registration date', c('date', 'time'), sep = ' ')
 
-# filter out the time column
+# filter out the time column and then correct the order(appearance of the date column)
+#  !!!!! ALWAYS RUN THE FOLLOWING TWO LINES TOGETHER PLEASE!!!!!
 x4 <- x3[c(1,2,4:8)]
-
-# correct the order(appearance of the date column)
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
 
 # Read the missing cells into the counts object along with any missing values: we have 7 nulls
-# If we subtract the 68 nulls from x4's length of 3867, we should have 361 after filtering
+# If we subtract the 68 nulls from x4's length of 3867, we should have 3799 after filtering
 counts <- table(x4$`Registered places`, useNA ="ifany")
 view(counts)
 
@@ -98,7 +100,7 @@ names(cleanedcare)
 
 # rename some columns
 names(cleanedcare)[2] <- "Registration date"
-names(cleanedcare)[5] <- "Local authority"
+names(cleanedcare)[6] <- "Local authority"
 
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
@@ -118,11 +120,15 @@ counts <- table(cleanedcare$`Provider name`, useNA ="ifany")
 view(counts)
 
 # no nulls here
+counts <- table(cleanedcare$`Local authority code`, useNA ="ifany")
+view(counts)
+
+# no nulls here
 counts <- table(cleanedcare$`Local authority`, useNA ="ifany")
 view(counts)
 
-# no nulls in region
-counts <- table(cleanedcare$Region, useNA ="ifany")
+# no nulls in registered places
+counts <- table(cleanedcare$`Registered places`, useNA ="ifany")
 view(counts)
 
 ############# checks ##################
