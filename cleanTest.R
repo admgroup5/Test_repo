@@ -76,6 +76,8 @@ x3 <- separate(as1,'Registration date', c('date', 'time'), sep = ' ')
 #  !!!!! ALWAYS RUN THE FOLLOWING TWO LINES TOGETHER PLEASE!!!!!
 x4 <- x3[c(1,2,4:8)]
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
+#  !!!!! ALWAYS RUN THE ABOVE TWO LINES TOGETHER PLEASE!!!!!
+
 
 # Read the missing cells into the counts object along with any missing values: we have 7 nulls
 # If we subtract the 68 nulls from x4's length of 3867, we should have 3799 after filtering
