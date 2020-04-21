@@ -22,52 +22,48 @@ la <- read_excel("raw data used/local authorities.xlsx")
 
 x <- childcare %>%
   filter(`Local Authority`%in% la$`Local authority`)
+
 # Duplicate the local authority column
 x$la2 <- x$`Local Authority`
 
-# filter columns to show only the required columns
+# filter columns to show only the required columns (remove region and others)
 x2 <- x[c(2,5,6,7,13,21,40)] 
-# xtry <- x2 %>% mutate(`Local Authority` = replace(`Local Authority`, `Local Authority` %in% tst2, tstval))
+# reorder the columns 
+x2 <- x2[c(1,2,3,4,7,5,6)]
 
+# rename to work on new variable 
 as1 <- x2
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
-
-# Below works but once it has replaced all of bury, it cannot work again because the code is still
-# looking for bury and cannot replace a null
-for(i in as1$`Local Authority`) if(i %in% la$`Local authority`) as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
-
-for(i in as1$`Local Authority`) if(i %in% la$`Local authority`) as1$la2[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
-
 countsla <- table(as1$la2, useNA ="ifany")
 view(countsla)
 
-###########################################################################
-###########################################################################
-# *************example codes*****************
-# Below is working, but only one iteration at a time. I will have to run it manually hundreds of times
-# for it to find all the local authorities and replace them with their matching local authority codes
-# as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
-# counts <- table(as1$`Local Authority`, useNA ="ifany")
-# view(counts)
-# for(i in junk$alpha) if(i %in% "B") junk$alpha <- "b"
+as1$la2[as1$la2 %in% "Bolton"] <- "E08000001"
+as1$la2[as1$la2 %in% "Bury"] <- "E08000002"
+as1$la2[as1$la2 %in% "Manchester"] <- "E08000003"
+as1$la2[as1$la2 %in% "Oldham"] <- "E08000004"
+as1$la2[as1$la2 %in% "Rochdale"] <- "E08000005"
+as1$la2[as1$la2 %in% "Salford"] <- "E08000006"
+as1$la2[as1$la2 %in% "Stockport"] <- "E08000007"
+as1$la2[as1$la2 %in% "Tameside"] <- "E08000008"
+as1$la2[as1$la2 %in% "Trafford"] <- "E08000009"
+as1$la2[as1$la2 %in% "Wigan"] <- "E08000010"
 
-# as1$Values[match(as2$ID, as1$ID)] <- as2$Values
-# as1 <- data.frame(ID = c(1,2,3,4,5,6),
-#                   pID = c(21,22,23,24,25,26),
-#                   Values = c(435,33,45,NA, NA,12))
-# as2 <- data.frame(ID = c(4,5),
-#                   pid = c(24,25),
-#                   Values = c(544, 676))
+counts <- table(as1$`Local Authority`, useNA ="ifany")
+view(counts)
+countsla <- table(as1$la2, useNA ="ifany")
+view(countsla)
 
-# df[df$height == 20, "height"] <- NA
-# *************example codes*****************
-###########################################################################
-###########################################################################
+# E08000001	Bolton
+# E08000002	Bury
+# E08000003	Manchester
+# E08000004	Oldham
+# E08000005	Rochdale
+# E08000006	Salford
+# E08000007	Stockport
+# E08000008	Tameside
+# E08000009	Trafford
+# E08000010	Wigan
 
 
 # correct the dates to remove the time 
