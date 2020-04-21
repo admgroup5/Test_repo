@@ -35,6 +35,7 @@ la <- read_excel("raw data used/local authorities.xlsx")
 x <- childcare %>%
   filter(`Local Authority`%in% la$`Local authority`)
 
+
 # filter columns to show only the required columns
 x2 <- x[c(2,5,6,7,13,21)] 
 # xtry <- x2 %>% mutate(`Local Authority` = replace(`Local Authority`, `Local Authority` %in% tst2, tstval))
@@ -47,13 +48,15 @@ as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
 
-as1$Values[match(as2$ID, as1$ID)] <- as2$Values
-as1 <- data.frame(ID = c(1,2,3,4,5,6),
-                  pID = c(21,22,23,24,25,26),
-                  Values = c(435,33,45,NA, NA,12))
-as2 <- data.frame(ID = c(4,5),
-                  pid = c(24,25),
-                  Values = c(544, 676))
+
+
+# as1$Values[match(as2$ID, as1$ID)] <- as2$Values
+# as1 <- data.frame(ID = c(1,2,3,4,5,6),
+#                   pID = c(21,22,23,24,25,26),
+#                   Values = c(435,33,45,NA, NA,12))
+# as2 <- data.frame(ID = c(4,5),
+#                   pid = c(24,25),
+#                   Values = c(544, 676))
 
 
 
