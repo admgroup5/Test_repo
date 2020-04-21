@@ -219,24 +219,24 @@ pop3 <- pop2[c(1,2,3,5,6,7,8,9,10)]
 pop4 <- gather (pop3, year, 'count', -'Local authority code', -'Local authority', -'Age')
 
 
-# Introduce month column with empty values
-pop4[,"month"] <- NA
+# # Introduce month column with empty values
+# pop4[,"month"] <- NA
 
-# change the order so month is next to the year 
-pop5 <- pop4[c(1,2,3,6,4,5)]
-
-# change the data type to character
-pop5$month <- as.character(pop5$month)
+# # change the order so month is next to the year 
+# pop5 <- pop4[c(1,2,3,6,4,5)]
+# 
+# # change the data type to character
+# pop5$month <- as.character(pop5$month)
 
 # replace the values in the month column with the value we want ("NA")
-tst <- c()
-value <- c('NA')
-tst[1:360]<- unique(value)[1]
-
-pop5$month <- tst
+# tst <- c()
+# value <- c('NA')
+# tst[1:360]<- unique(value)[1]
+# 
+# pop5$month <- tst
 
 # your clean data
-cleanpop <- pop5
+cleanpop <- pop4
 
 ############# checks ##################
 complete.cases(cleanpop)
@@ -255,4 +255,11 @@ summary(cleanpop)
 
 # save cleaned dataset as a csv file
 write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
+
+######################################################################################################################################################
+# Matching the time IDs 
+
+
+
+
 
