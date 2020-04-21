@@ -19,9 +19,6 @@ time <- read_excel("raw data used/DimTime.xlsx")
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 tst2 <- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Rochdale', 'Salford', 'Stockport', 'Tameside', 'Trafford', 'Wigan')
-tstval <- c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010')
-
-
 
 x <- childcare %>%
   filter(`Local Authority`%in% tst2)
@@ -29,15 +26,11 @@ x <- childcare %>%
 # filter columns to show only the required columns
 x2 <- x[c(2,5,6,7,13,21)] 
 
-xtry <- x2 %>% mutate(`Local Authority` = replace(, height %in% tst2, 'test'))
-df[df$height == 20, "height"] <- NA
-
-
 # correct the dates to remove the time 
 x3 <- separate(x2,'Registration date', c('date', 'time'), sep = ' ')
 
 # filter out the time column
-x4 <- x3[c(1,2,4:8)]
+x4 <- x3[c(1,2,4:7)]
 
 # correct the order(appearance of the date column)
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")

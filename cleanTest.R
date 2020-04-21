@@ -22,19 +22,14 @@ la <- read_excel("raw data used/local authorities.xlsx")
 
 x <- childcare %>%
   filter(`Local Authority`%in% la$`Local authority`)
-
+# Duplicate the local authority column
+x$la2 <- x$`Local Authority`
 
 # filter columns to show only the required columns
-x2 <- x[c(2,5,6,7,13,21)] 
+x2 <- x[c(2,5,6,7,13,21,40)] 
 # xtry <- x2 %>% mutate(`Local Authority` = replace(`Local Authority`, `Local Authority` %in% tst2, tstval))
 
 as1 <- x2
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
-
-# Below is working, but only one iteration at a time. I will have to run it manually hundreds of times
-# for it to find all the local authorities and replace them with their matching local authority codes
-as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
 
@@ -44,9 +39,22 @@ for(i in as1$`Local Authority`) if(i %in% la$`Local authority`) as1$`Local Autho
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
 
+for(i in as1$`Local Authority`) if(i %in% la$`Local authority`) as1$la2[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
+counts <- table(as1$`Local Authority`, useNA ="ifany")
+view(counts)
 
+countsla <- table(as1$la2, useNA ="ifany")
+view(countsla)
 
-for(i in junk$alpha) if(i %in% "B") junk$alpha <- "b"
+###########################################################################
+###########################################################################
+# *************example codes*****************
+# Below is working, but only one iteration at a time. I will have to run it manually hundreds of times
+# for it to find all the local authorities and replace them with their matching local authority codes
+# as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
+# counts <- table(as1$`Local Authority`, useNA ="ifany")
+# view(counts)
+# for(i in junk$alpha) if(i %in% "B") junk$alpha <- "b"
 
 # as1$Values[match(as2$ID, as1$ID)] <- as2$Values
 # as1 <- data.frame(ID = c(1,2,3,4,5,6),
@@ -56,21 +64,17 @@ for(i in junk$alpha) if(i %in% "B") junk$alpha <- "b"
 #                   pid = c(24,25),
 #                   Values = c(544, 676))
 
-
-
-
-
 # df[df$height == 20, "height"] <- NA
+# *************example codes*****************
+###########################################################################
+###########################################################################
+
 
 # correct the dates to remove the time 
 x3 <- separate(x2,'Registration date', c('date', 'time'), sep = ' ')
 
 # filter out the time column
 x4 <- x3[c(1,2,4:8)]
-
-
-
-
 
 # correct the order(appearance of the date column)
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
