@@ -18,59 +18,26 @@ time <- read_excel("raw data used/DimTime.xlsx")
 
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
-la <- read_excel("raw data used/local authorities.xlsx")
+tst2 <- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Rochdale', 'Salford', 'Stockport', 'Tameside', 'Trafford', 'Wigan')
+tstval <- c('E08000001', 'E08000002', 'E08000003', 'E08000004', 'E08000005', 'E08000006', 'E08000007', 'E08000008', 'E08000009', 'E08000010')
+
+
 
 x <- childcare %>%
-  filter(`Local Authority`%in% la$`Local authority`)
-
+  filter(`Local Authority`%in% tst2)
 
 # filter columns to show only the required columns
 x2 <- x[c(2,5,6,7,13,21)] 
-# xtry <- x2 %>% mutate(`Local Authority` = replace(`Local Authority`, `Local Authority` %in% tst2, tstval))
 
-as1 <- x2
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
+xtry <- x2 %>% mutate(`Local Authority` = replace(, height %in% tst2, 'test'))
+df[df$height == 20, "height"] <- NA
 
-# Below is working, but only one iteration at a time. I will have to run it manually hundreds of times
-# for it to find all the local authorities and replace them with their matching local authority codes
-as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
-
-# Below works but once it has replaced all of bury, it cannot work again because the code is still
-# looking for bury and cannot replace a null
-for(i in as1$`Local Authority`) if(i %in% la$`Local authority`) as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
-
-
-
-for(i in junk$alpha) if(i %in% "B") junk$alpha <- "b"
-
-# as1$Values[match(as2$ID, as1$ID)] <- as2$Values
-# as1 <- data.frame(ID = c(1,2,3,4,5,6),
-#                   pID = c(21,22,23,24,25,26),
-#                   Values = c(435,33,45,NA, NA,12))
-# as2 <- data.frame(ID = c(4,5),
-#                   pid = c(24,25),
-#                   Values = c(544, 676))
-
-
-
-
-
-# df[df$height == 20, "height"] <- NA
 
 # correct the dates to remove the time 
 x3 <- separate(x2,'Registration date', c('date', 'time'), sep = ' ')
 
 # filter out the time column
 x4 <- x3[c(1,2,4:8)]
-
-
-
-
 
 # correct the order(appearance of the date column)
 x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
