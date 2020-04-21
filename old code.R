@@ -103,6 +103,50 @@ summary(cleanedcare)
 # save cleaned dataset as a csv file
 write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
 
+
+###########################################################################
+###########################################################################
+# *****housing****
+# Import dataset
+housing <- read_csv("raw data used/housing.csv")
+
+# rename some columns
+names(housing)[4] <- "Local authority"
+
+# filter out unwanted local authorities
+y <- housing %>%
+  filter(`Local authority` %in% tst2)
+
+# check counts
+counts <- table(y$`Local authority`, useNA ="ifany")
+view(counts)
+
+# create a key(to be called'date') for the dates and a new column 
+# for the number of houses called 'new houses' as the dataset is unneccesarily wide
+houses <- gather (y, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
+
+
+############# checks ##################
+complete.cases(houses)
+str(houses)
+# checking Non numeric values
+'isitnumeric?'<- unlist(lapply(houses, is.numeric))
+view(`isitnumeric?`)
+# checking Non character values
+'isitcharacter?'<- unlist(lapply(houses, is.character))
+view(`isitcharacter?`)
+#checking for null in the object
+is.null(houses)
+#checking missing values
+summary(houses)
+############# checks ##################
+
+# since its all clean, we can rename 
+cleanhouse <- houses
+
+# save cleaned dataset as a csv file
+write.csv(cleanhouse, "clean/cleanhouse.csv", row.names=F)
+
 ###########################################################################
 ###########################################################################
 # *****Population****
@@ -163,47 +207,3 @@ summary(cleanpop)
 
 # save cleaned dataset as a csv file
 write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
-
-###########################################################################
-###########################################################################
-# *****housing****
-# Import dataset
-housing <- read_csv("raw data used/housing.csv")
-
-# rename some columns
-names(housing)[4] <- "Local authority"
-
-# filter out unwanted local authorities
-y <- housing %>%
-  filter(`Local authority` %in% tst2)
-
-# check counts
-counts <- table(y$`Local authority`, useNA ="ifany")
-view(counts)
-
-# create a key(to be called'date') for the dates and a new column 
-# for the number of houses called 'new houses' as the dataset is unneccesarily wide
-houses <- gather (y, Date, 'new houses', -'Region/Country code', -'Region/Country name', -'Local authority code', -'Local authority')
-
-
-############# checks ##################
-complete.cases(houses)
-str(houses)
-# checking Non numeric values
-'isitnumeric?'<- unlist(lapply(houses, is.numeric))
-view(`isitnumeric?`)
-# checking Non character values
-'isitcharacter?'<- unlist(lapply(houses, is.character))
-view(`isitcharacter?`)
-#checking for null in the object
-is.null(houses)
-#checking missing values
-summary(houses)
-############# checks ##################
-
-# since its all clean, we can rename 
-cleanhouse <- houses
-
-# save cleaned dataset as a csv file
-write.csv(cleanhouse, "clean/cleanhouse.csv", row.names=F)
-
