@@ -50,6 +50,7 @@ caredata %>% filter(is.na(Registration.date))
 df[df == "NULL"] <- NA
 df[["Registration.date"]] <- as.numeric(df[[""]])
 #checking Datatype
+#exp <- separate(cleanhouse,'Date', c('month', 'year'), sep = '-')
 View(caredata)
 str(caredata)
 caredata$Registration.date <-as.Date(caredata$Registration.date, origin = "1899-12-30")
