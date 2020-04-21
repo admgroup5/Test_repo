@@ -70,6 +70,7 @@ view(countsla)
 # E08000010	Wigan
 
 
+
 # correct the dates to remove the time 
 x3 <- separate(as1,'Registration date', c('date', 'time'), sep = ' ')
 
