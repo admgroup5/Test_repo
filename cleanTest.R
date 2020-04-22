@@ -260,8 +260,24 @@ write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 
 ######################################################################################################################################################
 # Matching the time IDs 
-
-
-
-
-
+##Working on LiveBirths
+library(readxl)
+live20142015 <- read_excel("C:/Users/user/School_Project/live20142015.xlsx")
+View(live20142015)
+live20152016 <- read_excel("C:/Users/user/School_Project/live20152016.xlsx")
+View(live20152016)
+live20162017 <- read_excel("C:/Users/user/School_Project/live20162017.xlsx")
+View(live20162017)
+live20172018 <- read_excel("C:/Users/user/School_Project/live20172018.xlsx")
+View(live20172018)
+live20182019 <- read_excel("C:/Users/user/School_Project/live20182019.xlsx")
+View(live20182019)
+#Gathering the data to have date  and values arranged properly
+install.packages("tidyverse")
+library(tidyverse)
+# lon<-live20142015 %>% gather(Key="DateofBirth", Value = "NumberofBirth", c(-1,-2))
+rlang::last_error()
+# datefig<- live20142015[5,]
+# view(datefig)
+# to convert to date type
+# I tried working on these but could ot get what I expected, I will check it again
