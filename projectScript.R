@@ -120,6 +120,15 @@ CGlive2$Month <- replace(CGlive2$Month,CGlive2$Month == Dates)
 BirthDate<- strptime(CGlive2$Month,"%dd%mm%yyyy")
 view(BirthDate)
 c<-Dates$`2014/2015`
-replace(BirthDate, BirthDate, c)
 ?as.Date
 class(Dates$`2014/2015`)
+library(readxl)
+Dates <- read_excel("raw data used/live births/Dates.xlsx", 
+                    col_types = c("date", "date", "date", 
+                                  "date", "date", "date", "date", "date", 
+                                  "date", "date", "date", "date"))
+View(Dates)
+Mlive =merge(Clive2,Dates)
+View(Mlive)
+?merge
+
