@@ -262,10 +262,23 @@ write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 # Import Total live births by month and area of usual residence of Mother, 
 # England and Wales, September 2014 to August 2015
 
-live20142015 <- read_excel("raw data used/live births/livebirthsbymonthsexandladsept2014toaug2015ew.xls",sheet = "arranged data")
+live20142015 <- read_excel("raw data used/live births/livebirthsbymonthsexandladsept2014toaug2015ew.xls")
 
 # Import Live births by month and area of usual residence of Mother, 
 # England and Wales, September 2015 to August 2016
+
+
+# Import Live births by month and area of usual residence of Mother, 
+# England and Wales, September 2016 to August 2017
+
+
+# Import Live births by month and area of usual residence of Mother, 
+# England and Wales, September 2017 to August 2018
+
+
+# Import Live births by month and area of usual residence of Mother, 
+# England and Wales, September 2018 to August 2019
+
 
 ######################################################################################################################################################
 # Matching the time IDs 
