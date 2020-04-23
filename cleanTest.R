@@ -259,19 +259,28 @@ summary(cleanpop)
 write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 
 ######################################################################################################################################################
+# Import Total live births by month and area of usual residence of Mother, 
+# England and Wales, September 2014 to August 2015
+
+live20142015 <- read_excel("raw data used/live births/livebirthsbymonthsexandladsept2014toaug2015ew.xls",sheet = "arranged data")
+
+# Import Live births by month and area of usual residence of Mother, 
+# England and Wales, September 2015 to August 2016
+
+######################################################################################################################################################
 # Matching the time IDs 
 ##Working on LiveBirths
 library(readxl)
-live20142015 <- read_excel("C:/Users/user/School_Project/live20142015.xlsx")
-View(live20142015)
-live20152016 <- read_excel("C:/Users/user/School_Project/live20152016.xlsx")
-View(live20152016)
-live20162017 <- read_excel("C:/Users/user/School_Project/live20162017.xlsx")
-View(live20162017)
-live20172018 <- read_excel("C:/Users/user/School_Project/live20172018.xlsx")
-View(live20172018)
-live20182019 <- read_excel("C:/Users/user/School_Project/live20182019.xlsx")
-View(live20182019)
+# live20142015 <- read_excel("C:/Users/user/School_Project/live20142015.xlsx")
+# View(live20142015)
+# live20152016 <- read_excel("C:/Users/user/School_Project/live20152016.xlsx")
+# View(live20152016)
+# live20162017 <- read_excel("C:/Users/user/School_Project/live20162017.xlsx")
+# View(live20162017)
+# live20172018 <- read_excel("C:/Users/user/School_Project/live20172018.xlsx")
+# View(live20172018)
+# live20182019 <- read_excel("C:/Users/user/School_Project/live20182019.xlsx")
+# View(live20182019)
 #Gathering the data to have date  and values arranged properly
 install.packages("tidyverse")
 library(tidyverse)
