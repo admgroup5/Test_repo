@@ -1,11 +1,16 @@
+# change a column from excel date codes into usable dates
+haha<- x4
+view(haha)
+haha$date <- as.Date(haha$date, origin = "1899-12-30")
+haha$date <- as.Date(haha$date, format = "%m/%d/%y")
 
-
-exp <- separate(cleanhouse,'Date', c('month', 'year'), sep = '-')
-
+myprettydate <- format(25-05-2018, format = "%b %d, %Y")
 ###########################################################################
 ###########################################################################
 # *************example codes*****************
 
+
+# exp <- separate(cleanhouse,'Date', c('month', 'year'), sep = '-')
 # Below is working, but only one iteration at a time. I will have to run it manually hundreds of times
 # for it to find all the local authorities and replace them with their matching local authority codes
 # as1$`Local Authority`[match(la$`Local authority`, as1$`Local Authority`)] <- la$`Local authority code`
