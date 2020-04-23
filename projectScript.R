@@ -4,6 +4,7 @@ sessionInfo()
 library(arules)
 # importing childcare data
 childcare<- read.csv("childcare.csv")
+#commiting
 View(childcare)
 install.packages("RODBC")
 # installing readr
