@@ -97,3 +97,27 @@ str(AHousing)
 complete.cases(AHousing)
 summary(AHousing)
 View(AHousing)
+#working on 2015 and 2016
+#Gathering the data to have date  and values arranged properly
+install.packages("tidyver")
+library(tidyverse)
+Clive2<- livebirthsbymonthsexandladsept2015toaug2016ew
+view(Clive2)
+CGlive2<- Clive2 %>% gather(key = "Month",value = "Births", c(-1,-2))
+view(CGlive2)
+#Checking the data type of month
+class(CGlive2$Month)
+#To convert the character to date type
+?strptimese
+library(readxl)
+# Importing the dates table
+Dates <- read_excel("raw data used/live births/Dates.xlsx",col_types = c("date", "date", "date", "date", "date"))
+View(Dates)
+#Now replacing the date values in BirthDate
+?replace
+CGlive2$Month <- replace(CGlive2$Month,CGlive2$Month == Dates)
+BirthDate<- strptime(CGlive2$Month,"%dd%mm%yyyy")
+view(BirthDate)
+c<-Dates$`2014/2015`
+replace(BirthDate, BirthDate, c)
+?as.Date
