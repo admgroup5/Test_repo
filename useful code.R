@@ -4,10 +4,15 @@ view(haha)
 haha$date <- as.Date(haha$date, origin = "1899-12-30")
 haha$date <- as.Date(haha$date, format = "%m/%d/%y")
 
+
+
 myprettydate <- format(25-05-2018, format = "%b %d, %Y")
 ###########################################################################
 ###########################################################################
 # *************example codes*****************
+
+# Add a new column called "new" in the dataset called "haha"and populate it with the value 6 in every row 
+# haha$new <- 6
 
 
 # exp <- separate(cleanhouse,'Date', c('month', 'year'), sep = '-')
