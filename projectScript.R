@@ -226,7 +226,7 @@ summary(AHousing)
 View(AHousing)
 #working on 2015 and 2016
 #Gathering the data to have date  and values arranged properly
-install.packages("tidyver")
+install.packages("tidyverse")
 library(tidyverse)
 Clive2<- livebirthsbymonthsexandladsept2015toaug2016ew
 view(Clive2)
@@ -258,4 +258,58 @@ Mlive =merge(Clive2,Dates)
 View(Mlive)
 ?merge
 
+<<<<<<< HEAD
+
+?rbind
+Dates <- read_excel("raw data used/live births/Dates.xlsx", 
+                    col_types = c("numeric", "numeric", "date", 
+                                  "date", "date", "date", "date", "date", 
+                                  "date", "date", "date", "date", "date", 
+                                  "date"))
+View(Dates)
+
+#coersing the two names to be the same
+names(Clive2) <- names(Dat) 
+trial<-rbind(Clive2,Dat)
+View(trial)
+trialb<-rbind(Dat$...5,Clive2)
+View(trialb)
+# now let's gather
+Gt<- trialb %>% gather(key = "Month",value = "Births", c(-1,-2))
+view(CGlive2)
+view(Gt)
+#converting the month column to date
+Gt$Month<- as.Date(Gt$Month,"%dd%mm%yyyy")
+str(Gt$Month)
+view(Gt)
+Bt<- trialb %>% gather(key = "Month",value = "Births", c(-1,-2))
+view(Bt)
+?strptime
+write.csv(Bt, "trial.csv", row.names=T)
+newtime<- strptime(Bt$Month,"%d%m%yyyy")
+view(newtime)
+newCt<- strptime(Cdate,"%d%m%yyyy")
+view(Cdate)
+Cdat <- as.Date(Cdate,format = "%m/%d/%y")
+view(Cdat)
+?cbind
+# this did not work as expected gBirth<- Births20182019 %>% gather(key = "Authority Name",value = "Births", c(-2))
+view(gBirth)
+t1<-Transposed20142015
+view(t5)
+t2<-Transposed20152016
+t3<-Transposed20162017
+t4<-Transpose20172018
+t5<- Transpose20182019
+t6<- t4[,-2]
+view(t6)
+
+# need to filter to have same column numbers
+#creating a vector of the needed values
+you<- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')
+FT1<- T20142015[,]
+names(t1) <- names(t2) <- names(t3) <-names(t6) <-names(t5)
+tbound<- rbind(t1,t2,t3,t6,t5)
+=======
 >>>>>>> b0893dcb137605685fc30cb0f5341c054cdffe4b
+>>>>>>> 9bd0a30f1ee5722e519574850873f8e52119960a
