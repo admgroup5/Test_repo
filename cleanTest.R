@@ -265,7 +265,6 @@ write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 # England and Wales, September 2014 to August 2019
 births1419 <- read_excel("raw data used/live births/Merged births.xlsx")
 
-
 ######################################################################################################################################################
 
 # lon<-live20142015 %>% gather(Key="DateofBirth", Value = "NumberofBirth", c(-1,-2))
