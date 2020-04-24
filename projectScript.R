@@ -176,6 +176,7 @@ t4<-Transpose20172018
 t5<- Transpose20182019
 t6<- t4[,-2]
 view(t6)
+
 # need to filter to have same column numbers
 #creating a vector of the needed values
 you<- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')
