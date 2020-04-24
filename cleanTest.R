@@ -2,8 +2,10 @@
 # rm(list=ls())
 # Install packages (run lines individually to ensure smooth installation)
 # check for updates. If there are any for the below packages, update by clicking the refresh button
-library(dplyr)
 install.packages(c("boot", "class", "foreign", "lattice", "MASS", "nlme", "nnet", "survival"))
+install.packages("plyr")
+library(plyr)
+library(dplyr)
 library(readxl)
 library(readr)
 library(tidyr)
