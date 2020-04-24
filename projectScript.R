@@ -310,6 +310,12 @@ you<- c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochda
 FT1<- T20142015[,]
 names(t1) <- names(t2) <- names(t3) <-names(t6) <-names(t5)
 tbound<- rbind(t1,t2,t3,t6,t5)
-=======
->>>>>>> b0893dcb137605685fc30cb0f5341c054cdffe4b
->>>>>>> 9bd0a30f1ee5722e519574850873f8e52119960a
+View(T20142015)
+#filtering by rownames first created a new object called dt
+dt = T20142015
+View(dt)
+dt$...1= rownames(T20142015)
+toy = c('Bolton', 'Bury', 'Manchester', 'Oldham', 'Salford', 'Tameside', 'Rochdale', 'Stockport', 'Trafford', 'Wigan')
+Fdt = filter(dt$...1 == toy )
+ft1 = filter(T20142015,)
+warning(50)
