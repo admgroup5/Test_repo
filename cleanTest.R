@@ -264,11 +264,19 @@ write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 # Import Total live births by month and area of usual residence of Mother, 
 # England and Wales, September 2014 to August 2019
 births1419 <- read_excel("raw data used/live births/Merged births.xlsx")
-
+view(births1419)
 ex1 <- births1419
 
-names(ex1)[3:50] <-  format(as.Date(as.numeric(names(ex1)[3]),
+names(ex1)[3:50] <-  format(as.Date(as.numeric(names(ex1)[3:50]),
                                   origin = "1899-12-30"), "%d/%m/%Y")
+
+ex2 <- gather (ex1, Date, 'new births', -1,-2)
+view(ex2)
+
+counts <- table(ex2$`Authority code`, useNA ="ifany")
+counts <- table(ex2$`Authority name`, useNA ="ifany")
+counts <- table(ex2$`Date`, useNA ="ifany")
+view(counts)
 
 ######################################################################################################################################################
 
