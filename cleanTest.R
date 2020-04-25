@@ -267,8 +267,11 @@ births1419 <- read_excel("raw data used/live births/Merged births.xlsx")
 view(births1419)
 ex1 <- births1419
 
-names(ex1)[3:50] <-  format(as.Date(as.numeric(names(ex1)[3:50]),
+
+names(ex1)[3:62] <-  format(as.Date(as.numeric(names(ex1)[3:62]),
                                   origin = "1899-12-30"), "%d/%m/%Y")
+
+
 
 ex2 <- gather (ex1, Date, 'new births', -1,-2)
 view(ex2)
