@@ -281,6 +281,9 @@ counts <- table(ex2$`Authority name`, useNA ="ifany")
 counts <- table(ex2$`Date`, useNA ="ifany")
 view(counts)
 
+write.csv(ex2, "clean/notyetreadybirths.csv", row.names=F)
+
+
 ######################################################################################################################################################
 
 # lon<-live20142015 %>% gather(Key="DateofBirth", Value = "NumberofBirth", c(-1,-2))
