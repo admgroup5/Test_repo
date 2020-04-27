@@ -83,11 +83,11 @@ x4 <- x3[c(1,2,4:8)]
 # write.csv(x4, "clean/experiment.csv", row.names=F)
 
 
-x4$date <- format(as.Date(x4$date), "%d/%B/%Y")
+x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
 #  !!!!! ALWAYS RUN THE ABOVE TWO LINES TOGETHER PLEASE!!!!!
 
-x4$date <-  format(as.Date(as.numeric(x4$date),
-                                    origin = "1899-12-30"), "%d/%m/%Y")
+# x4$date <-  format(as.Date(as.numeric(x4$date),
+#                                     origin = "1899-12-30"), "%d/%m/%Y")
 # 
 # x4$date <-  format(as.numeric(x4$date), "%d/%m/%Y") 
 # x4$date <-  as.character(x4$date)
@@ -173,11 +173,12 @@ write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
 births1419 <- read_excel("raw data used/live births/Merged births.xlsx")
 view(births1419)
 ex1 <- births1419
-ex13 <- births1419
+# ex13 <- births1419
 
 # change the format of the names of the columns 
 names(ex1)[3:62] <-  format(as.Date(as.numeric(names(ex1)[3:62]),
-                                  origin = "1899-12-30"), "%d/%m/%Y")
+                                  origin = "1899-12-30"), "%d/%b/%Y")
+
 
 # This does the time format in full
 # names(ex13)[3:62] <-  format(as.Date(as.numeric(names(ex13)[3:62]),
@@ -192,7 +193,8 @@ ex1 <- ex1 %>%
 ex2 <- gather (ex1, Date, 'new births', -1,-2)
 view(ex2)
 
-
+ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
+view(ex2)
 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
 counts <- table(ex2$`Authority name`, useNA ="ifany")
