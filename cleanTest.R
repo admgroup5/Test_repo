@@ -11,17 +11,17 @@ library(readr)
 library(tidyr)
 library(tidyverse)
 
+# filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
+la <- read_excel("raw data used/local authorities.xlsx")
+
+# Import the time IDs
+time <- read_excel("raw data used/DimTime.xlsx")
 
 ###########################################################################
 ###########################################################################
 # *****childcare****
 # Import dataset, specify range and give appropriate name 
 childcare <- read_excel("raw data used/Education_Childcare_dataset_as_at_31_March_2018_new (version 1).xlsx",sheet = "Childcare_providers", col_types = c("text","text", "text", "text", "date", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","numeric", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text", "text","text", "text", "text", "text"))
-time <- read_excel("raw data used/DimTime.xlsx")
-
-
-# filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
-la <- read_excel("raw data used/local authorities.xlsx")
 
 x <- childcare %>%
   filter(`Local Authority`%in% la$`Local authority`)
@@ -79,8 +79,20 @@ x3 <- separate(as1,'Registration date', c('date', 'time'), sep = ' ')
 # filter out the time column and then correct the order(appearance of the date column)
 #  !!!!! ALWAYS RUN THE FOLLOWING TWO LINES TOGETHER PLEASE!!!!!
 x4 <- x3[c(1,2,4:8)]
-x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
+
+# write.csv(x4, "clean/experiment.csv", row.names=F)
+
+
+x4$date <- format(as.Date(x4$date), "%d/%B/%Y")
 #  !!!!! ALWAYS RUN THE ABOVE TWO LINES TOGETHER PLEASE!!!!!
+
+x4$date <-  format(as.Date(as.numeric(x4$date),
+                                    origin = "1899-12-30"), "%d/%m/%Y")
+# 
+# x4$date <-  format(as.numeric(x4$date), "%d/%m/%Y") 
+# x4$date <-  as.character(x4$date)
+# counts <- table(x4$date, useNA ="ifany")
+# view(counts)
 
 
 # Read the missing cells into the counts object along with any missing values: we have 7 nulls
@@ -154,111 +166,6 @@ summary(cleanedcare)
 
 # save cleaned dataset as a csv file
 write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
-
-###########################################################################
-###########################################################################
-# *****housing****
-# Import dataset
-housing <- read_csv("raw data used/housing.csv")
-
-# rename some columns
-names(housing)[4] <- "Local authority"
-
-# filter out unwanted local authorities and the unwanted columns 
-y <- housing %>%
-  filter(`Local authority` %in% la$`Local authority`)
-y <- y[3:100]
-view(y)
-
-# check counts
-counts <- table(y$`Local authority`, useNA ="ifany")
-view(counts)
-
-# create a key(to be called'date') for the dates and a new column 
-# for the number of houses called 'new houses' as the dataset is unneccesarily wide
-houses <- gather (y, Date, 'new houses', -'Local authority code', -'Local authority')
-view(houses)
-
-############# checks ##################
-complete.cases(houses)
-str(houses)
-# checking Non numeric values
-'isitnumeric?'<- unlist(lapply(houses, is.numeric))
-view(`isitnumeric?`)
-# checking Non character values
-'isitcharacter?'<- unlist(lapply(houses, is.character))
-view(`isitcharacter?`)
-#checking for null in the object
-is.null(houses)
-#checking missing values
-summary(houses)
-############# checks ##################
-
-# since its all clean, we can rename 
-cleanhouse <- houses
-
-# save cleaned dataset as a csv file
-write.csv(cleanhouse, "clean/cleanhouse.csv", row.names=F)
-
-###########################################################################
-###########################################################################
-# *****Population****
-# Import dataset
-population <- read_csv("raw data used/Population 2.0.csv")
-
-# create new version to clean
-pop2 <- population
-view(pop2)
-
-# rename some columns
-names(pop2)[1] <- "Local authority"
-names(pop2)[2] <- "Local authority code"
-
-# change the order of the columns then remove unnecessary columns 
-pop2 <- pop2[c(2,1,3,4,5,6,7,8,9,10)]
-pop3 <- pop2[c(1,2,3,5,6,7,8,9,10)]
-
-# create a key(to be called'year') for the years and a new column 
-# for the values (called 'count')as the dataset is unneccesarily wide
-pop4 <- gather (pop3, year, 'count', -'Local authority code', -'Local authority', -'Age')
-
-
-# # Introduce month column with empty values
-# pop4[,"month"] <- NA
-
-# # change the order so month is next to the year 
-# pop5 <- pop4[c(1,2,3,6,4,5)]
-# 
-# # change the data type to character
-# pop5$month <- as.character(pop5$month)
-
-# replace the values in the month column with the value we want ("NA")
-# tst <- c()
-# value <- c('NA')
-# tst[1:360]<- unique(value)[1]
-# 
-# pop5$month <- tst
-
-# your clean data
-cleanpop <- pop4
-
-############# checks ##################
-complete.cases(cleanpop)
-str(cleanpop)
-# checking Non numeric values
-'isitnumeric?'<- unlist(lapply(cleanpop, is.numeric))
-view(`isitnumeric?`)
-# checking Non character values
-'isitcharacter?'<- unlist(lapply(cleanpop, is.character))
-view(`isitcharacter?`)
-#checking for null in the object
-is.null(cleanpop)
-#checking missing values
-summary(cleanpop)
-############# checks ##################
-
-# save cleaned dataset as a csv file
-write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
 
 ######################################################################################################################################################
 # Import Total live births by month and area of usual residence of Mother, 
