@@ -193,11 +193,11 @@ view(ex2)
 ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
 view(ex2)
 
-z <- sqldf("SELECT time.TimeID, haha.`Authority code`, haha.`Authority name`, haha.`new births`
-FROM haha
+cleanbirths <- sqldf("SELECT time.TimeID, ex2.`Authority code`, ex2.`Authority name`, ex2.`new births`
+FROM ex2
 JOIN time
-ON haha.`reg month`=time.MonthName AND haha.`reg year`=time.Year")
-view(ex2)
+ON ex2.`reg month`=time.MonthName AND ex2.`reg year`=time.Year")
+view(cleanbirths)
 
 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
@@ -206,7 +206,22 @@ counts <- table(ex2$`Date`, useNA ="ifany")
 counts <- table(z$`TimeID`, useNA ="ifany")
 view(counts)
 
-write.csv(ex2, "clean/notyetreadybirths.csv", row.names=F)
+############# checks ##################
+complete.cases(cleanbirths)
+str(cleanbirths)
+# checking Non numeric values
+'isitnumeric?'<- unlist(lapply(cleanbirths, is.numeric))
+view(`isitnumeric?`)
+# checking Non character values
+'isitcharacter?'<- unlist(lapply(cleanbirths, is.character))
+view(`isitcharacter?`)
+#checking for null in the object
+is.null(cleanbirths)
+#checking missing values
+summary(cleanbirths)
+############# checks ##################
+
+write.csv(cleanbirths, "clean/notyetreadybirths.csv", row.names=F)
 
 
 ######################################################################################################################################################
