@@ -88,7 +88,7 @@ x4 <- x3[c(1,2,4:8)]
 # write.csv(x4, "clean/experiment.csv", row.names=F)
 
 
-x4$date <- format(as.Date(x4$date), "%d/%m/%Y")
+x4$date <- format(as.Date(x4$date), "%d/%b/%Y")
 #  !!!!! ALWAYS RUN THE ABOVE TWO LINES TOGETHER PLEASE!!!!!
 
 # x4$date <-  format(as.Date(as.numeric(x4$date),
@@ -124,6 +124,7 @@ names(cleanedcare)
 # rename some columns
 names(cleanedcare)[2] <- "Registration date"
 names(cleanedcare)[6] <- "Local authority"
+view(cleanedcare)
 
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
@@ -183,33 +184,20 @@ ex1 <- births1419
 names(ex1)[3:62] <-  format(as.Date(as.numeric(names(ex1)[3:62]),
                                   origin = "1899-12-30"), "%d/%b/%Y")
 
-
 ex1 <- ex1 %>%
   filter(`Authority name`%in% la$`Local authority`)
 
 ex2 <- gather (ex1, Date, 'new births', -1,-2)
 view(ex2)
 
-haha2 <- ex2
-time2<-time%>%unite(date,MonthName:Year,sep = '/')
-view(time2)
-
 ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
 view(ex2)
-
-
-haha <- ex2
-
-
 
 z <- sqldf("SELECT time.TimeID, haha.`Authority code`, haha.`Authority name`, haha.`new births`
 FROM haha
 JOIN time
 ON haha.`reg month`=time.MonthName AND haha.`reg year`=time.Year")
 view(ex2)
-
-
-
 
 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
