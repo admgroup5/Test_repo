@@ -286,9 +286,3 @@ write.csv(ex2, "clean/notyetreadybirths.csv", row.names=F)
 
 ######################################################################################################################################################
 
-# lon<-live20142015 %>% gather(Key="DateofBirth", Value = "NumberofBirth", c(-1,-2))
-rlang::last_error()
-# datefig<- live20142015[5,]
-# view(datefig)
-# to convert to date type
-# I tried working on these but could ot get what I expected, I will check it again
