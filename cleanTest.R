@@ -271,8 +271,12 @@ ex13 <- births1419
 names(ex1)[3:62] <-  format(as.Date(as.numeric(names(ex1)[3:62]),
                                   origin = "1899-12-30"), "%d/%m/%Y")
 
+# This does the time format in full
 # names(ex13)[3:62] <-  format(as.Date(as.numeric(names(ex13)[3:62]),
 #                                     origin = "1899-12-30"), "%d/%B/%Y")
+
+# ex14 <- gather (ex13, Date, 'new births', -1,-2)
+# view(ex14)
 
 ex1 <- ex1 %>%
   filter(`Authority name`%in% la$`Local authority`)
@@ -280,8 +284,7 @@ ex1 <- ex1 %>%
 ex2 <- gather (ex1, Date, 'new births', -1,-2)
 view(ex2)
 
-# ex14 <- gather (ex13, Date, 'new births', -1,-2)
-# view(ex14)
+
 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
 counts <- table(ex2$`Authority name`, useNA ="ifany")
