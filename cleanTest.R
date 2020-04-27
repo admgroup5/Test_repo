@@ -31,8 +31,8 @@ childcare <- read_excel("raw data used/Education_Childcare_dataset_as_at_31_Marc
 x <- childcare %>%
   filter(`Local Authority`%in% la$`Local authority`)
 
-# Introduce a column for the local authority code by duplicating the local authority column
-x$`Local authority code` <- x$`Local Authority`
+# Introduce a column for the Authority code by duplicating the local authority column
+x$`Authority code` <- x$`Local Authority`
 
 # filter columns to show only the required columns (remove region and others)
 x2 <- x[c(2,5,6,7,13,21,40)] 
@@ -45,24 +45,24 @@ as1 <- x2
 # check the types of data contained in the columns we are concerned about
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
-countsla <- table(as1$`Local authority code`, useNA ="ifany")
+countsla <- table(as1$`Authority code`, useNA ="ifany")
 view(countsla)
 
-# introduce the local authority codes
-as1$`Local authority code`[as1$`Local authority code` %in% "Bolton"] <- "E08000001"
-as1$`Local authority code`[as1$`Local authority code` %in% "Bury"] <- "E08000002"
-as1$`Local authority code`[as1$`Local authority code` %in% "Manchester"] <- "E08000003"
-as1$`Local authority code`[as1$`Local authority code` %in% "Oldham"] <- "E08000004"
-as1$`Local authority code`[as1$`Local authority code` %in% "Rochdale"] <- "E08000005"
-as1$`Local authority code`[as1$`Local authority code` %in% "Salford"] <- "E08000006"
-as1$`Local authority code`[as1$`Local authority code` %in% "Stockport"] <- "E08000007"
-as1$`Local authority code`[as1$`Local authority code` %in% "Tameside"] <- "E08000008"
-as1$`Local authority code`[as1$`Local authority code` %in% "Trafford"] <- "E08000009"
-as1$`Local authority code`[as1$`Local authority code` %in% "Wigan"] <- "E08000010"
+# introduce the Authority codes
+as1$`Authority code`[as1$`Authority code` %in% "Bolton"] <- "E08000001"
+as1$`Authority code`[as1$`Authority code` %in% "Bury"] <- "E08000002"
+as1$`Authority code`[as1$`Authority code` %in% "Manchester"] <- "E08000003"
+as1$`Authority code`[as1$`Authority code` %in% "Oldham"] <- "E08000004"
+as1$`Authority code`[as1$`Authority code` %in% "Rochdale"] <- "E08000005"
+as1$`Authority code`[as1$`Authority code` %in% "Salford"] <- "E08000006"
+as1$`Authority code`[as1$`Authority code` %in% "Stockport"] <- "E08000007"
+as1$`Authority code`[as1$`Authority code` %in% "Tameside"] <- "E08000008"
+as1$`Authority code`[as1$`Authority code` %in% "Trafford"] <- "E08000009"
+as1$`Authority code`[as1$`Authority code` %in% "Wigan"] <- "E08000010"
 
 counts <- table(as1$`Local Authority`, useNA ="ifany")
 view(counts)
-countsla <- table(as1$`Local authority code`, useNA ="ifany")
+countsla <- table(as1$`Authority code`, useNA ="ifany")
 view(countsla)
 
 # E08000001	Bolton
@@ -84,10 +84,6 @@ x3 <- separate(as1,'Registration date', c('date', 'time'), sep = ' ')
 # filter out the time column and then correct the order(appearance of the date column)
 #  !!!!! ALWAYS RUN THE FOLLOWING TWO LINES TOGETHER PLEASE!!!!!
 x4 <- x3[c(1,2,4:8)]
-
-# write.csv(x4, "clean/experiment.csv", row.names=F)
-
-
 x4$date <- format(as.Date(x4$date), "%d/%b/%Y")
 #  !!!!! ALWAYS RUN THE ABOVE TWO LINES TOGETHER PLEASE!!!!!
 
@@ -123,7 +119,7 @@ names(cleanedcare)
 
 # rename some columns
 names(cleanedcare)[2] <- "Registration date"
-names(cleanedcare)[6] <- "Local authority"
+names(cleanedcare)[6] <- "Authority name"
 view(cleanedcare)
 
 # Run the following section by section to view how many nulls are present 
@@ -144,7 +140,7 @@ counts <- table(cleanedcare$`Provider name`, useNA ="ifany")
 view(counts)
 
 # no nulls here
-counts <- table(cleanedcare$`Local authority code`, useNA ="ifany")
+counts <- table(cleanedcare$`Authority code`, useNA ="ifany")
 view(counts)
 
 # no nulls here

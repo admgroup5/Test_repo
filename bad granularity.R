@@ -66,7 +66,7 @@ summary(houses)
 cleanhouse <- houses
 
 # save cleaned dataset as a csv file
-write.csv(cleanhouse, "clean/cleanhouse.csv", row.names=F)
+write.csv(cleanhouse, "clean/old clean bad granularity/cleanhouse.csv", row.names=F)
 
 ###########################################################################
 ###########################################################################
@@ -126,5 +126,5 @@ summary(cleanpop)
 ############# checks ##################
 
 # save cleaned dataset as a csv file
-write.csv(cleanpop, "clean/cleanpop.csv", row.names=F)
+write.csv(cleanpop, "clean/old clean bad granularity/cleanpop.csv", row.names=F)
 
