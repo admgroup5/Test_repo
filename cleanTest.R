@@ -178,19 +178,11 @@ write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
 births1419 <- read_excel("raw data used/live births/Merged births.xlsx")
 view(births1419)
 ex1 <- births1419
-# ex13 <- births1419
 
 # change the format of the names of the columns 
 names(ex1)[3:62] <-  format(as.Date(as.numeric(names(ex1)[3:62]),
                                   origin = "1899-12-30"), "%d/%b/%Y")
 
-
-# This does the time format in full
-# names(ex13)[3:62] <-  format(as.Date(as.numeric(names(ex13)[3:62]),
-#                                     origin = "1899-12-30"), "%d/%B/%Y")
-
-# ex14 <- gather (ex13, Date, 'new births', -1,-2)
-# view(ex14)
 
 ex1 <- ex1 %>%
   filter(`Authority name`%in% la$`Local authority`)
@@ -198,45 +190,32 @@ ex1 <- ex1 %>%
 ex2 <- gather (ex1, Date, 'new births', -1,-2)
 view(ex2)
 
+haha2 <- ex2
+time2<-time%>%unite(date,MonthName:Year,sep = '/')
+view(time2)
+
 ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
 view(ex2)
 
 
-
-# if ex2$`reg month` == time$MonthName AND ex2$`reg year` == time$Year
-# then ex2$timeID == time$TimeID
-
-# pseudocode
-# if df1$col1 == df2$col1 AND df1$col2 == df2$col2 then df1$col3 == df2$col3
-
-# df1$col3 <- NULL
-# setDT(df1)[df2, col3 := i.dummy, on = .(col1 = c1, col2 = c2)]
-# df1
-
 haha <- ex2
 
-haha$TimeID <- 0
-setDT(haha)[time, TimeID := i.TimeID, on = .("reg month" = Month, "reg year" = Year)]
-view(haha)
-
-setDT(haha)[time, time$TimeID := i.TimeID, on = .(haha$`reg month` = time$MonthName, haha$`reg year` = time$Year)]
-view(haha)
-
-haha <- haha %>% 
-  mutate(TimeID=ifelse((haha$`reg month`%in%time$MonthName)&(haha$`reg year`%in%time$Year),time$TimeID,NA))
 
 
-# sqldf("SELECT TimeID.time, haha.`Authority code`, haha.`Authority name`, haha.`new births`
-# FROM haha
-# INNER JOIN time
-# ON haha.`reg month`=time.MonthName;")
-
+z <- sqldf("SELECT time.TimeID, haha.`Authority code`, haha.`Authority name`, haha.`new births`
+FROM haha
+JOIN time
+ON haha.`reg month`=time.MonthName AND haha.`reg year`=time.Year")
 view(ex2)
+
+
+
 
 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
 counts <- table(ex2$`Authority name`, useNA ="ifany")
 counts <- table(ex2$`Date`, useNA ="ifany")
+counts <- table(z$`TimeID`, useNA ="ifany")
 view(counts)
 
 write.csv(ex2, "clean/notyetreadybirths.csv", row.names=F)

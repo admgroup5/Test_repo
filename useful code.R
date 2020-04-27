@@ -1,3 +1,20 @@
+haha$TimeID <- 0
+setDT(haha)[time, TimeID := i.TimeID, on = .("reg month" = Month, "reg year" = Year)]
+view(haha)
+
+setDT(haha)[time, time$TimeID := i.TimeID, on = .(haha$`reg month` = time$MonthName, haha$`reg year` = time$Year)]
+view(haha)
+
+haha <- haha %>% 
+  mutate(TimeID=ifelse((haha$`reg month`%in%time$MonthName)&(haha$`reg year`%in%time$Year),time$TimeID,NA))
+
+
+# sqldf("SELECT time.TimeID, haha.`Authority code`, haha.`Authority name`, haha.`new births`
+# FROM haha
+# INNER JOIN time
+# ON haha.`reg month`=time.MonthName;")
+
+
 # change a column from excel date codes into usable dates
 haha<- x4
 view(haha)
