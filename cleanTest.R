@@ -5,6 +5,7 @@
 install.packages(c("boot", "class", "foreign", "lattice", "MASS", "nlme", "nnet", "survival"))
 install.packages("plyr")
 install.packages("data.table")
+install.packages("sqldf")
 
 library(plyr)
 library(dplyr)
@@ -13,6 +14,7 @@ library(readr)
 library(tidyr)
 library(tidyverse)
 library(data.table)
+library(sqldf)
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 la <- read_excel("raw data used/local authorities.xlsx")
@@ -213,9 +215,21 @@ view(ex2)
 
 haha <- ex2
 
-haha$TimeID <- NULL
-setDT(haha)[df2, col3 := i.dummy, on = .(col1 = c1, col2 = c2)]
-df1
+haha$TimeID <- 0
+setDT(haha)[time, TimeID := i.TimeID, on = .("reg month" = Month, "reg year" = Year)]
+view(haha)
+
+setDT(haha)[time, time$TimeID := i.TimeID, on = .(haha$`reg month` = time$MonthName, haha$`reg year` = time$Year)]
+view(haha)
+
+haha <- haha %>% 
+  mutate(TimeID=ifelse((haha$`reg month`%in%time$MonthName)&(haha$`reg year`%in%time$Year),time$TimeID,NA))
+
+
+# sqldf("SELECT TimeID.time, haha.`Authority code`, haha.`Authority name`, haha.`new births`
+# FROM haha
+# INNER JOIN time
+# ON haha.`reg month`=time.MonthName;")
 
 view(ex2)
 
