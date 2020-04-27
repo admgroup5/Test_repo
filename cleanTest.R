@@ -268,6 +268,7 @@ view(births1419)
 ex1 <- births1419
 ex13 <- births1419
 
+# change the format of the names of the columns 
 names(ex1)[3:62] <-  format(as.Date(as.numeric(names(ex1)[3:62]),
                                   origin = "1899-12-30"), "%d/%m/%Y")
 
