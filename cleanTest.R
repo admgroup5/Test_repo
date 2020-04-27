@@ -4,12 +4,15 @@
 # check for updates. If there are any for the below packages, update by clicking the refresh button
 install.packages(c("boot", "class", "foreign", "lattice", "MASS", "nlme", "nnet", "survival"))
 install.packages("plyr")
+install.packages("data.table")
+
 library(plyr)
 library(dplyr)
 library(readxl)
 library(readr)
 library(tidyr)
 library(tidyverse)
+library(data.table)
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 la <- read_excel("raw data used/local authorities.xlsx")
@@ -195,6 +198,27 @@ view(ex2)
 
 ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
 view(ex2)
+
+
+
+# if ex2$`reg month` == time$MonthName AND ex2$`reg year` == time$Year
+# then ex2$timeID == time$TimeID
+
+# pseudocode
+# if df1$col1 == df2$col1 AND df1$col2 == df2$col2 then df1$col3 == df2$col3
+
+# df1$col3 <- NULL
+# setDT(df1)[df2, col3 := i.dummy, on = .(col1 = c1, col2 = c2)]
+# df1
+
+haha <- ex2
+
+haha$TimeID <- NULL
+setDT(haha)[df2, col3 := i.dummy, on = .(col1 = c1, col2 = c2)]
+df1
+
+view(ex2)
+
 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
 counts <- table(ex2$`Authority name`, useNA ="ifany")
