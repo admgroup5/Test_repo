@@ -224,6 +224,18 @@ ON sepn.`reg month`=time.MonthName AND sepn.`reg year`=time.Year")
 view(cleanbirths)
 
 
+cleanbirths$TimeID <- as.numeric(cleanbirths$TimeID)
+cleanbirths$`Reg date` <- anydate(cleanbirths$`Reg date`)
+cleanbirths$`Authority code` <- as.character(cleanbirths$`Authority code`)
+cleanbirths$`Authority name` <- as.character(cleanbirths$`Authority name`)
+cleanbirths$`new births`<- as.numeric(cleanbirths$`new births`)
+
+class(cleanbirths$`Reg date`)
+
+summary(cleanbirths)
+view(cleanbirths)
+
+ 
 counts <- table(ex2$`Authority code`, useNA ="ifany")
 counts <- table(ex2$`Authority name`, useNA ="ifany")
 counts <- table(ex2$`Date`, useNA ="ifany")
