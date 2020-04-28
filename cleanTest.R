@@ -257,7 +257,7 @@ is.null(cleanbirths)
 summary(cleanbirths)
 ############# checks ##################
 
-write.csv(cleanbirths, "clean/notyetreadybirths.csv", row.names=F)
+write.csv(cleanbirths, "clean/cleanbirths.csv", row.names=F)
 
 
 ######################################################################################################################################################
