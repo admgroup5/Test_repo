@@ -6,6 +6,8 @@ install.packages(c("boot", "class", "foreign", "lattice", "MASS", "nlme", "nnet"
 install.packages("plyr")
 install.packages("data.table")
 install.packages("sqldf")
+install.packages("anytime")
+
 
 library(plyr)
 library(dplyr)
@@ -15,6 +17,7 @@ library(tidyr)
 library(tidyverse)
 library(data.table)
 library(sqldf)
+library(anytime)
 
 # filter data to only show the local authorities we are interested in (the 10 below make up greater manchester)
 la <- read_excel("raw data used/local authorities.xlsx")
@@ -129,16 +132,23 @@ ON datesep.`reg month`=time.MonthName AND datesep.`reg year`=time.Year")
 view(cleanedcare)
 
 
-  
+# make sure the data types are correct. It seems sql changes everything to character
 cleanedcare$TimeID <- as.numeric(cleanedcare$TimeID)
 cleanedcare$`Reg date` <- as.Date(cleanedcare$`Reg date`)
+
+haha <- cleanedcare
+haha$`Reg date` <- anydate(haha$`Reg date`)
+haha$`Reg date` <- format(as.Date(haha$`Reg date`), "%d/%b/%Y")
+
 cleanedcare$`Provider URN` <- as.character(cleanedcare$`Provider URN`)
-cleanedcare$`Provider type` <- as.numeric(cleanedcare$`Provider type`)
-cleanedcare$`Provider name` <- as.numeric(cleanedcare$`Provider name`)
-cleanedcare$`Authority code` <- as.numeric(cleanedcare$`Authority code`)
-cleanedcare$`Authority name` <- as.numeric(cleanedcare$`Authority name`)
+cleanedcare$`Provider type` <- as.character(cleanedcare$`Provider type`)
+cleanedcare$`Provider name` <- as.character(cleanedcare$`Provider name`)
+cleanedcare$`Authority code` <- as.character(cleanedcare$`Authority code`)
+cleanedcare$`Authority name` <- as.character(cleanedcare$`Authority name`)
 cleanedcare$`Registered places` <- as.numeric(cleanedcare$`Registered places`)
 view(cleanedcare)
+summary(cleanedcare)
+
 
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
