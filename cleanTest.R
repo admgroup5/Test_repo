@@ -112,6 +112,8 @@ names(test2)
 # rename some columns
 names(test2)[2] <- "Registration date"
 names(test2)[6] <- "Authority name"
+test2$`Reg date` <- test2$`Registration date`
+test2 <- test2[c(1,8,2,3,4,5,6,7)]
 view(test2)
 
 
@@ -119,9 +121,8 @@ datesep <- separate(test2,'Registration date', c('reg day','reg month', 'reg yea
 view(datesep)
 
 # Add a column for the TimeID
-cleanedcare <- sqldf("SELECT time.TimeID, datesep.`Authority code`, datesep.`Authority name`, datesep.`new births`
-[1] "Provider URN"      "Registration date" "Provider type"     "Provider name"     "Authority code"   
-[6] "Authority name"    "Registered places"
+cleanedcare <- sqldf("SELECT time.TimeID, datesep.`Reg date`, datesep.`Provider URN`, datesep.`Provider type`,
+datesep.`Provider name`, datesep.`Authority code`, datesep.`Authority name`, datesep.`Registered places`
 FROM datesep
 JOIN time
 ON datesep.`reg month`=time.MonthName AND datesep.`reg year`=time.Year")
@@ -134,7 +135,7 @@ counts <- table(cleanedcare$`Provider URN`, useNA ="ifany")
 view(counts)
 
 # no nulls here
-counts <- table(cleanedcare$`Registration date`, useNA ="ifany")
+counts <- table(cleanedcare$`Reg date`, useNA ="ifany")
 view(counts)
 
 # no nulls in provider type
@@ -150,7 +151,7 @@ counts <- table(cleanedcare$`Authority code`, useNA ="ifany")
 view(counts)
 
 # no nulls here
-counts <- table(cleanedcare$`Local authority`, useNA ="ifany")
+counts <- table(cleanedcare$`Authority name`, useNA ="ifany")
 view(counts)
 
 # no nulls in registered places
