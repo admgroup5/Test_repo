@@ -134,20 +134,18 @@ view(cleanedcare)
 
 # make sure the data types are correct. It seems sql changes everything to character
 cleanedcare$TimeID <- as.numeric(cleanedcare$TimeID)
-cleanedcare$`Reg date` <- as.Date(cleanedcare$`Reg date`)
-
-haha <- cleanedcare
-haha$`Reg date` <- anydate(haha$`Reg date`)
-haha$`Reg date` <- format(as.Date(haha$`Reg date`), "%d/%b/%Y")
-
+cleanedcare$`Reg date` <- anydate(cleanedcare$`Reg date`)
 cleanedcare$`Provider URN` <- as.character(cleanedcare$`Provider URN`)
 cleanedcare$`Provider type` <- as.character(cleanedcare$`Provider type`)
 cleanedcare$`Provider name` <- as.character(cleanedcare$`Provider name`)
 cleanedcare$`Authority code` <- as.character(cleanedcare$`Authority code`)
 cleanedcare$`Authority name` <- as.character(cleanedcare$`Authority name`)
 cleanedcare$`Registered places` <- as.numeric(cleanedcare$`Registered places`)
-view(cleanedcare)
+
+class(cleanedcare$`Reg date`)
+
 summary(cleanedcare)
+view(cleanedcare)
 
 
 # Run the following section by section to view how many nulls are present 
@@ -212,16 +210,17 @@ ex1 <- ex1 %>%
   filter(`Authority name`%in% la$`Local authority`)
 
 ex2 <- gather (ex1, Date, 'new births', -1,-2)
+ex2$`Reg date` <- ex2$Date
 view(ex2)
 
-ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
-view(ex2)
+sepn <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
+view(sepn)
 
 # Add a column for the TimeID
-cleanbirths <- sqldf("SELECT time.TimeID, ex2.`Authority code`, ex2.`Authority name`, ex2.`new births`
-FROM ex2
+cleanbirths <- sqldf("SELECT time.TimeID, sepn.`Reg date`, sepn.`Authority code`, sepn.`Authority name`, sepn.`new births`
+FROM sepn
 JOIN time
-ON ex2.`reg month`=time.MonthName AND ex2.`reg year`=time.Year")
+ON sepn.`reg month`=time.MonthName AND sepn.`reg year`=time.Year")
 view(cleanbirths)
 
 
