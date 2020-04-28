@@ -129,6 +129,17 @@ ON datesep.`reg month`=time.MonthName AND datesep.`reg year`=time.Year")
 view(cleanedcare)
 
 
+  
+cleanedcare$TimeID <- as.numeric(cleanedcare$TimeID)
+cleanedcare$`Reg date` <- as.Date(cleanedcare$`Reg date`)
+cleanedcare$`Provider URN` <- as.character(cleanedcare$`Provider URN`)
+cleanedcare$`Provider type` <- as.numeric(cleanedcare$`Provider type`)
+cleanedcare$`Provider name` <- as.numeric(cleanedcare$`Provider name`)
+cleanedcare$`Authority code` <- as.numeric(cleanedcare$`Authority code`)
+cleanedcare$`Authority name` <- as.numeric(cleanedcare$`Authority name`)
+cleanedcare$`Registered places` <- as.numeric(cleanedcare$`Registered places`)
+view(cleanedcare)
+
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
 counts <- table(cleanedcare$`Provider URN`, useNA ="ifany")
