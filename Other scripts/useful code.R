@@ -9,6 +9,15 @@ haha <- haha %>%
   mutate(TimeID=ifelse((haha$`reg month`%in%time$MonthName)&(haha$`reg year`%in%time$Year),time$TimeID,NA))
 
 
+# USE THESE TO CHANGE DATES
+# x4$date <-  format(as.Date(as.numeric(x4$date),
+#                                     origin = "1899-12-30"), "%d/%m/%Y")
+# 
+# x4$date <-  format(as.numeric(x4$date), "%d/%m/%Y") 
+# x4$date <-  as.character(x4$date)
+# counts <- table(x4$date, useNA ="ifany")
+# view(counts)
+
 # sqldf("SELECT time.TimeID, haha.`Authority code`, haha.`Authority name`, haha.`new births`
 # FROM haha
 # INNER JOIN time

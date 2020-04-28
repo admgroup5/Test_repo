@@ -20,7 +20,7 @@ library(sqldf)
 la <- read_excel("raw data used/local authorities.xlsx")
 
 # Import the time IDs
-time <- read_excel("raw data used/DimTime.xlsx")
+time <- read_excel("raw data used/DimTime v2.xlsx")
 
 ###########################################################################
 ###########################################################################
@@ -87,14 +87,6 @@ x4 <- x3[c(1,2,4:8)]
 x4$date <- format(as.Date(x4$date), "%d/%b/%Y")
 #  !!!!! ALWAYS RUN THE ABOVE TWO LINES TOGETHER PLEASE!!!!!
 
-# x4$date <-  format(as.Date(as.numeric(x4$date),
-#                                     origin = "1899-12-30"), "%d/%m/%Y")
-# 
-# x4$date <-  format(as.numeric(x4$date), "%d/%m/%Y") 
-# x4$date <-  as.character(x4$date)
-# counts <- table(x4$date, useNA ="ifany")
-# view(counts)
-
 
 # Read the missing cells into the counts object along with any missing values: we have 7 nulls
 # If we subtract the 68 nulls from x4's length of 3867, we should have 3799 after filtering
@@ -112,15 +104,29 @@ test <- x4 %>% filter(`Registered places`!='NULL')
 view(test)
 
 # rename your cleaned data 
-cleanedcare <- test
+test2 <- test
 
 # check the column names
-names(cleanedcare)
+names(test2)
 
 # rename some columns
-names(cleanedcare)[2] <- "Registration date"
-names(cleanedcare)[6] <- "Authority name"
+names(test2)[2] <- "Registration date"
+names(test2)[6] <- "Authority name"
+view(test2)
+
+
+datesep <- separate(test2,'Registration date', c('reg day','reg month', 'reg year'), sep = '/')
+view(datesep)
+
+# Add a column for the TimeID
+cleanedcare <- sqldf("SELECT time.TimeID, datesep.`Authority code`, datesep.`Authority name`, datesep.`new births`
+[1] "Provider URN"      "Registration date" "Provider type"     "Provider name"     "Authority code"   
+[6] "Authority name"    "Registered places"
+FROM datesep
+JOIN time
+ON datesep.`reg month`=time.MonthName AND datesep.`reg year`=time.Year")
 view(cleanedcare)
+
 
 # Run the following section by section to view how many nulls are present 
 # Showed no nulls in provider URN
@@ -189,6 +195,7 @@ view(ex2)
 ex2 <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
 view(ex2)
 
+# Add a column for the TimeID
 cleanbirths <- sqldf("SELECT time.TimeID, ex2.`Authority code`, ex2.`Authority name`, ex2.`new births`
 FROM ex2
 JOIN time
