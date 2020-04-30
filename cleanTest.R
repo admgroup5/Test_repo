@@ -25,6 +25,9 @@ la <- read_excel("raw data used/local authorities.xlsx")
 # Import the time IDs
 time <- read_excel("raw data used/DimTime v2.xlsx")
 
+provider <- read_excel("raw data used/Provider Type.xlsx")
+
+
 ###########################################################################
 ###########################################################################
 # *****childcare****
@@ -104,7 +107,7 @@ barplot(counts, main="Registered places", xlab='Counts', ylab=('Registered place
 
 # remove the nulls
 test <- x4 %>% filter(`Registered places`!='NULL')
-view(test)
+# view(test)
 
 # rename your cleaned data 
 test2 <- test
@@ -117,11 +120,11 @@ names(test2)[2] <- "Registration date"
 names(test2)[6] <- "Authority name"
 test2$`Reg date` <- test2$`Registration date`
 test2 <- test2[c(1,8,2,3,4,5,6,7)]
-view(test2)
+# view(test2)
 
 
 datesep <- separate(test2,'Registration date', c('reg day','reg month', 'reg year'), sep = '/')
-view(datesep)
+# view(datesep)
 
 # Add a column for the TimeID
 cleanedcare <- sqldf("SELECT time.TimeID, datesep.`Reg date`, datesep.`Provider URN`, datesep.`Provider type`,
@@ -129,13 +132,22 @@ datesep.`Provider name`, datesep.`Authority code`, datesep.`Authority name`, dat
 FROM datesep
 JOIN time
 ON datesep.`reg month`=time.MonthName AND datesep.`reg year`=time.Year")
-view(cleanedcare)
+# view(cleanedcare)
+
+# Add a column for the ProviderID
+cleanedcare <- sqldf("SELECT cleanedcare.TimeID, cleanedcare.`Reg date`, cleanedcare.`Provider URN`, provider.`ProviderID`, cleanedcare.`Provider type`,
+cleanedcare.`Provider name`, cleanedcare.`Authority code`, cleanedcare.`Authority name`, cleanedcare.`Registered places`
+FROM cleanedcare
+JOIN provider
+ON cleanedcare.`Provider type`=provider.`Provider type`")
+# view(cleanedcare)
 
 
 # make sure the data types are correct. It seems sql changes everything to character
 cleanedcare$TimeID <- as.numeric(cleanedcare$TimeID)
 cleanedcare$`Reg date` <- anydate(cleanedcare$`Reg date`)
 cleanedcare$`Provider URN` <- as.character(cleanedcare$`Provider URN`)
+cleanedcare$ProviderID<- as.numeric(cleanedcare$ProviderID)
 cleanedcare$`Provider type` <- as.character(cleanedcare$`Provider type`)
 cleanedcare$`Provider name` <- as.character(cleanedcare$`Provider name`)
 cleanedcare$`Authority code` <- as.character(cleanedcare$`Authority code`)
