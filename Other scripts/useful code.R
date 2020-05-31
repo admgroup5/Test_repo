@@ -8,6 +8,9 @@ view(haha)
 haha <- haha %>% 
   mutate(TimeID=ifelse((haha$`reg month`%in%time$MonthName)&(haha$`reg year`%in%time$Year),time$TimeID,NA))
 
+#Use this to delete a row depending on what value is held in a column
+#e.g below, all rows containing the value "10" in the 'registered places' column will be deleted from the df
+xn<-xn[!(xn$`Registered places`%in% c("10")),]
 
 # USE THESE TO CHANGE DATES
 # x4$date <-  format(as.Date(as.numeric(x4$date),
