@@ -149,21 +149,21 @@ summary(cleanedcare)
 #view cleaned dataset
 view(cleanedcare)
 
-############# checks ##################
-# data summary and first few values in each column
-str(cleanedcare)
-# checking Non numeric values
-'isitnumeric?'<- unlist(lapply(cleanedcare, is.numeric))
-view(`isitnumeric?`)
-# checking Non character values
-'isitcharacter?'<- unlist(lapply(cleanedcare, is.character))
-view(`isitcharacter?`)
-#checking for nulls in the object
-is.null(cleanedcare)
-complete.cases(cleanedcare)
-#dataset summary
-summary(cleanedcare)
-############# checks ##################
+# ############# checks (uncomment this section and run separately) ##################
+# # data summary and first few values in each column
+# str(cleanedcare)
+# # checking Non numeric values
+# 'isitnumeric?'<- unlist(lapply(cleanedcare, is.numeric))
+# view(`isitnumeric?`)
+# # checking Non character values
+# 'isitcharacter?'<- unlist(lapply(cleanedcare, is.character))
+# view(`isitcharacter?`)
+# #checking for nulls in the object
+# is.null(cleanedcare)
+# complete.cases(cleanedcare)
+# #dataset summary
+# summary(cleanedcare)
+# ############# checks (uncomment this section and run separately) ##################
 
 # save cleaned dataset as a csv file in working directory
 write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
@@ -174,7 +174,7 @@ write.csv(cleanedcare, "clean/cleanedcare.csv", row.names=F)
 births1419 <- read_excel("raw data used/live births/Merged births.xlsx")
 
 #view what you imported
-view(births1419)
+# view(births1419)
 
 #create variable to work with
 ex1 <- births1419
@@ -192,11 +192,10 @@ ex2 <- gather (ex1, Date, 'new births', -1,-2)
 
 #Duplicate the date column and call this 'Reg date'
 ex2$`Reg date` <- ex2$Date
-view(ex2)
 
 # separate the date into day month and year columns
 sepn <- separate(ex2,'Date', c('reg day','reg month', 'reg year'), sep = '/')
-view(sepn)
+
 
 # Join the column for the TimeID from the time dataset
 cleanbirths <- sqldf("SELECT time.TimeID, sepn.`Reg date`, sepn.`Authority code`, sepn.`Authority name`, sepn.`new births`
@@ -222,21 +221,21 @@ summary(cleanbirths)
 view(cleanbirths)
 
 
-############# checks ##################
-# data summary and first few values in each column
-str(cleanbirths)
-# checking Non numeric values
-'isitnumeric?'<- unlist(lapply(cleanbirths, is.numeric))
-view(`isitnumeric?`)
-# checking Non character values
-'isitcharacter?'<- unlist(lapply(cleanbirths, is.character))
-view(`isitcharacter?`)
-#checking for nulls in the object
-is.null(cleanbirths)
-complete.cases(cleanbirths)
-#dataset summary
-summary(cleanbirths)
-############# checks ##################
+# ############# checks (uncomment this section and run separately) ##################
+# # data summary and first few values in each column
+# str(cleanbirths)
+# # checking Non numeric values
+# 'isitnumeric?'<- unlist(lapply(cleanbirths, is.numeric))
+# view(`isitnumeric?`)
+# # checking Non character values
+# 'isitcharacter?'<- unlist(lapply(cleanbirths, is.character))
+# view(`isitcharacter?`)
+# #checking for nulls in the object
+# is.null(cleanbirths)
+# complete.cases(cleanbirths)
+# #dataset summary
+# summary(cleanbirths)
+# ############# checks (uncomment this section and run separately) ##################
 
 #convert dataset to csv file and save in working directory
 write.csv(cleanbirths, "clean/cleanbirths.csv", row.names=F)
