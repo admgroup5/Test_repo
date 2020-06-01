@@ -52,10 +52,11 @@ x2 <- x2[c(1,2,3,4,7,5,6)]
 as1 <- x2
 
 # check the types of data contained in the columns we are concerned about
-counts <- table(as1$`Local Authority`, useNA ="ifany")
-view(counts)
-countsla <- table(as1$`Authority code`, useNA ="ifany")
-view(countsla)
+# Uncomment the following 4 lines and run separately if you wish
+# counts <- table(as1$`Local Authority`, useNA ="ifany")
+# view(counts)
+# countsla <- table(as1$`Authority code`, useNA ="ifany")
+# view(countsla)
 
 # assigning the correct Authority codes to the correct local authorities
 as1$`Authority code`[as1$`Authority code` %in% "Bolton"] <- "E08000001"
